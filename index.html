@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Chess</title>
+    <link rel="stylesheet" href="css/styles.css"> 
+</head>
+<body onload="empezar()">
+    <aside class="asides">
+        <button id="ia" onclick="llamarIA()">IA</button>
+        <form id="form1">
+            <label for="name">Jugador 1 escribe tu nombre</label>
+            <input id="name" type="text">
+
+        </form>
+        <span id="nombre1" class="nombres"></span>
+    </aside>
+    <main>
+        <article id="tablero">
+            <div id="casillaFinal">
+                <p>Final!</p>
+                <div id="final">
+                    <span id="textoFinal"></span>
+                    <div id=" botones">
+                        <button id="newGame" onclick="newGame()">Si</button>
+                        <button onclick="acabar()">No</button>
+                    </div>
+                </div>
+            </div>
+            
+        </article>
+    </main>
+    <aside class="asides">
+        <button id="stop" onclick="stop()">STOP</button>
+        <button id="anterior" onclick="retroceder()">Retroceder</button>
+        <form id="form2">
+            <label for="name2">Jugador 2 escribe tu nombre</label>
+            <input id="name2" type="text">
+            <button id="boton" onclick="procesarNombres(); crearTablero()">Enviar</button>
+        </form>
+        <span id="nombre2" class="nombres"></span>
+    </aside>
+    <script src="js/procesos.js"></script>
+    <script src="js/ia.js"></script>
+    <script src="js/chess.js"></script>
+</body>
+</html>
+<!--activarIA()-->
