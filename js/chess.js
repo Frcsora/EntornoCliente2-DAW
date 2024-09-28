@@ -123,39 +123,6 @@ function enroque(rey, torre){
     mover(rey, casilla2)
     mover(torre, casilla1)
 }
-function validarEnroque(rey, torre){
-
-    let [x,y] = tomarCoordenadas(rey)    
-    let [a,b] = tomarCoordenadas(torre)
-    //tomamos coordenadas de la posicion de rey y de torre
-    
-    const comprobacion = y < b ? 1 : -1
-    
-    //si y(coordenada horizontal del rey) es menor que b(coordinada horizontal de la torre), significa que la torre esta a la derecha del rey
-    //en ese caso el movimiento del rey sera hacia la derecha por tanto, aumentara el valor de la coordenada, mientras que para la torre disminuira
-    //en caso contrario sera alreves, ese cambio lo guardo en los valores cambioRey y cambioTorre
-    //Por otra parte, para comprobar si las casillas de enmedio esta vacia, tendre que comprobar hacia la derecha(en positivo) o hacia la izquierda(en negativo)
-    //por eso guardo ese cambio en comprobacion
-    if((b == 0 || b==7) && ((rey.id == "casilla04" || rey.id == "casilla74") && a == x)){
-            for(let i = y + comprobacion ; y < b ? i < b : i > b ; i += comprobacion){
-                //empezamos desde i + comprobacion, que puede ser y + 1 O y + (-1) por tanto, empezaria por la casilla inmediatamente a la izquierda o a la derecha del rey
-                //lo mismo pasa con el incremente, se ira haciendo i + 1 O i + (-1)a cada iteracion
-                //la condicion de salida comprueba tambien que torre es, si la torre es la de la izquierda, como ira incrementando el valor de i hay que hacerlo
-                //mientras sea menor que b, asi comprobaremos las casillas desde la derecha del rey hasta la izquierda de la torre
-                //en caso contrario hay que hacerlo mientras i > b, ya que ira decreciendo
-                let casilla = document.getElementById("casilla" + x + "" + i)
-        
-                if(casilla.hasChildNodes()){
-                    return false;
-                }
-                
-            }
-            return true
-            
-    } 
-    return false
-    
-}
 function buscarTipo(casilla){
     if (casilla === null) return ""
     for(let i = 0 ; i < tipo.length ; i++){
@@ -258,6 +225,7 @@ function moverPieza() {
                 || ( clickedElement.hasChildNodes() && clickedElement.firstChild.classList.contains(player ? "negra" : "blanca"))) 
                 && validar(seleccionada, clickedElement, buscarTipo(seleccionada))) {  
                 turn++
+
                 if(esFinalCamino(seleccionada, clickedElement)){
                     turnoAnterior = document.getElementById("tablero").cloneNode(true)
                     generarTurno(seleccionada, clickedElement)
@@ -278,7 +246,7 @@ function moverPieza() {
                     }
                     player = !player;    
                 }
-
+                
                 if(jaquemate()){
                     clearInterval(intervalo)
                     let fechaFinal = new Date(Date.now())
@@ -411,143 +379,5 @@ function mover(casillaOrigen, casillaDestino){
     casillaOrigen.classList.remove("active");
     seleccionada = null;           
 
-}
-
-function validar(casillaOrigen, casillaDestino, tipo){
-    
-    if(tipo === "peon"){
-        if(validarPeon(casillaOrigen, casillaDestino)){
-            return true
-        }
-    }
-    if(tipo === "caballo"){
-
-        if(validarCaballo(casillaOrigen, casillaDestino)){
-            return true
-        }
-    }   
-    if(tipo === "alfil" || tipo === "reina"){
-            if (validarAlfil(casillaOrigen, casillaDestino)) {
-                return true
-            }
-    }
-    if(tipo === "torre" || tipo === "reina"){
-            if (validarTorre(casillaOrigen, casillaDestino)) {
-                return true
-            }
-    }
-    if(tipo === "rey"){
-        if(validarRey(casillaOrigen, casillaDestino || validarEnroque(casillaOrigen, casillaDestino))){
-            return true
-        }
-    }
-    return false
-}
-function validarRey(casillaOrigen, casillaDestino){
-    
-    const [x, y] = tomarCoordenadas(casillaOrigen)
-    const [a, b] = tomarCoordenadas(casillaDestino)
-
-    if(Math.abs(x - a) <= 1 && Math.abs(y - b) <=1){
-        return true
-    }
-    return false
-}
-function validarPeon(casillaOrigen, casillaDestino){
-    const [x, y] = tomarCoordenadas(casillaOrigen)
-    const [a, b] = tomarCoordenadas(casillaDestino)
-
-    const valor = player ? -1 : 1;
-    const inicio = player ? 6 : 1;
-    if(!esPeon){
-        let siguienteCasilla = document.getElementById("casilla" + (x + valor) + "" + y)
-        if((((x + valor === a && y === b) || (x === inicio && x + (valor * 2) === a && y === b)) && !siguienteCasilla.hasChildNodes() && !casillaDestino.hasChildNodes())
-            || (x + valor === a && (y + valor === b || y + (valor * -1) === b) && casillaDestino.hasChildNodes())){
-                
-            return true
-        }
-    }
-    
-    if(esPeon){
-        if(x + (valor * -1) === a && (y + valor === b || y + (valor * -1) === b) && casillaDestino.hasChildNodes()){
-            return true
-        }
-        
-    }
-
-    
-    return false
-}
-function validarCaballo(casillaOrigen, casillaDestino){
-    
-    const [x, y] = tomarCoordenadas(casillaOrigen)
-    const [a, b] = tomarCoordenadas(casillaDestino)
-
-    const d1 = Math.abs(x - a)
-    const d2 = Math.abs(y - b)
-
-    if((d1 == 1 && d2 == 2) || (d1 == 2 && d2 == 1)){
-        return true
-    }
-    return false
-}
-function validarAlfil(casillaOrigen, casillaDestino){
-    const [x, y] = tomarCoordenadas(casillaOrigen)
-    const [a, b] = tomarCoordenadas(casillaDestino)
-    if(Math.abs(x - a) == Math.abs(y - b)){
-        let obstaculo = false;
-        const dx = (a > x) ? 1 : -1; 
-        const dy = (b > y) ? 1 : -1; 
-        let c = x + dx;
-        let c2 = y + dy;
-
-        while (c !== a && c2 !== b) {
-            const casilla = document.getElementById("casilla" + c + "" + c2);
-            if (casilla.hasChildNodes()) {
-                obstaculo = true;
-                break;
-            }
-            c += dx;
-            c2 += dy;
-        }
-        if (!obstaculo) {
-            return true
-        }
-    }
-    return false
-}
-
-function validarTorre(casillaOrigen, casillaDestino) {
-    const [x, y] = tomarCoordenadas(casillaOrigen);
-    const [a, b] = tomarCoordenadas(casillaDestino);
-
-    if ((x == a || y == b)) {
-        let obstaculo = false;
-        if (x != a) {
-            const c = Math.min(x, a);
-            const d = Math.max(x, a);
-            for (let i = c + 1; i < d; i++) {
-                const casilla = document.getElementById("casilla" + i + b);
-                if (casilla.hasChildNodes()) {
-                    obstaculo = true;
-                    break;
-                }
-            }
-        } else {
-            const c = Math.min(y, b);
-            const d = Math.max(y, b);
-            for (let i = c + 1; i < d; i++) {
-                const casilla = document.getElementById("casilla" + a + i);
-                if (casilla.hasChildNodes()) {
-                    obstaculo = true;
-                    break;
-                }
-            }
-        }
-        if (!obstaculo) {
-            return true
-        }
-    }
-    return false
 }
 moverPieza()

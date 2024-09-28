@@ -1,4 +1,6 @@
 function esSeguro(casilla){
+    //funcion que comprueba si la casilla a la que te estas moviendo es segura
+    //o te deja expuesto
     for(let i = 0 ; i < 8 ; i++){
         for(let j = 0 ; j < 8 ; j++){
             const casillaOrigen = document.getElementById("casilla" + i + "" + j)
@@ -94,9 +96,7 @@ function ia(){
     //tomamos 1 casilla de las que tengan prioridad si existe, o de las que puedan mover si no, de forma aleatoria
     posibilidades = dondeMover(casilla)
     destino = posibilidades[random(posibilidades.length)]
-    if(casilla === null || casilla == undefined || destino == null || destino == undefined){
-        throw new Error
-    }
+
     casilla.click() //hace click solo en la casilla
     //hacemos lo mismo con la casilladeDestino
     destino.click()    

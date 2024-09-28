@@ -24,23 +24,23 @@ function procesarNombres()
     document.getElementsByTagName("article")[0].style.display = "flex";
 }
 function acabar(){
-    document.getElementById("casillaFinal").style.display = "none";
+    document.getElementById("casillaFinal").style.display = "none";//Esconde la ventana que anuncia el final
 }
 function newGame(){
-    location.reload();
+    location.reload();//si le damos que si recarga la pagina
 }
 function empezar(){
     const boton = document.getElementById("boton")
-    boton.click()
+    boton.click()//da click al boton enviar para que empiece la partida
 }
 function activarIA(){
     const boton2 = document.getElementById("ia")
-    boton2.click()
+    boton2.click()//da click al boton ia para que ejecute un turno el solo
 }
 function reiniciar(){
     setInterval  ( function(){
         const boton3 = document.getElementById("newGame")
-        boton3.click()
+        boton3.click()//si se utiliza, da click a si en cuanto aparece la ventana del final a los 4 segundos
     }, 4000)
 }
 function stop(){
