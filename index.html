@@ -5,16 +5,20 @@
     <title>Chess</title>
     <link rel="stylesheet" href="css/styles.css"> 
 </head>
-<body onload="empezar()">
-    <aside class="asides">
-        <button id="ia" onclick="llamarIA()">IA</button>
+<body>
+    <header class="header">
+        <button id="ia">IA</button>
+        <button id="stop">STOP</button>
         <form id="form1">
             <label for="name">Jugador 1 escribe tu nombre</label>
             <input id="name" type="text">
-
+            <label for="name2">Jugador 2 escribe tu nombre</label>
+            <input id="name2" type="text">
+            <button id="boton">Enviar</button>
         </form>
         <span id="nombre1" class="nombres"></span>
-    </aside>
+        <span id="nombre2" class="nombres"></span>
+    </header>
     <main>
         <article id="tablero">
             <div class="casillaFinal" id="casillaFinal">
@@ -22,28 +26,19 @@
                 <div class="final" id="final">
                     <span id="textoFinal"></span>
                     <div class=" botones">
-                        <button id="newGame" onclick="newGame()">Si</button>
-                        <button onclick="acabar()">No</button>
+                        <button id="newGame">Si</button>
+                        <button id="acabar">No</button>
                     </div>
                 </div>
             </div>
             
         </article>
     </main>
-    <aside class="asides">
-        <button id="stop" onclick="stop()">STOP</button>
-        <button id="anterior" onclick="retroceder()">Retroceder</button>
-        <form id="form2">
-            <label for="name2">Jugador 2 escribe tu nombre</label>
-            <input id="name2" type="text">
-            <button id="boton" onclick="procesarNombres(); crearTablero()">Enviar</button>
-        </form>
-        <span id="nombre2" class="nombres"></span>
-    </aside>
     <script src="js/procesos.js"></script>
     <script src="js/validaciones.js"></script>
-    <script src="js/ia.js"></script>
+    <script src="js/procedimientosJuego.js"></script>
     <script src="js/chess.js"></script>
+    <script src="js/ia.js"></script>
 </body>
 </html>
 <!--activarIA()-->

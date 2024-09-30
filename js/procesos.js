@@ -1,3 +1,18 @@
+/**
+ * Primer documento js que se lee, contiene las variables globales y el funcionamiento de los botones
+*/
+let player = true;
+let seleccionada = null;
+const tipo = ["peon", "alfil", "reina", "rey", "torre", "caballo"]
+let esPeon = false
+let contador = 0
+let turnoAnterior = document.getElementById("tablero").cloneNode(true)
+let iniciado = false
+const fechaInicio = new Date(Date.now())
+const fechaInicioFormato = fechaInicio.toLocaleString()
+const turnos = []
+let turn = 0
+let intervalo = ""
 function name1(){
     let nombre1 = document.getElementById("name").value;
 
@@ -45,4 +60,58 @@ function reiniciar(){
 }
 function stop(){
     clearInterval(intervalo)
+}
+function crearTablero() {
+    event.preventDefault()
+    const tablero = document.getElementById("tablero");
+
+    document.getElementById("form1").style.display = "none"
+    for (let i = 0; i < 8; i++) {
+        const fila = document.createElement("div");
+        fila.id = "fila" + i;
+        fila.className = "filas";
+        tablero.appendChild(fila);
+        fila.style.border = "none";
+        for (let j = 0; j < 8; j++) {
+            const columna = document.createElement("div");
+            fila.appendChild(columna);
+            columna.id = "casilla" + i + "" + j;
+            columna.classList.add("casillas");
+            if ((i + j) % 2 != 0) {
+                columna.style.backgroundColor = "#430d06";
+            }
+            columna.style.display = "flex";
+        }
+    }
+    colocarFichas();
+    turnoAnterior = document.getElementById("tablero").cloneNode(true)
+}
+
+function colocarFichas() {
+    for (let i = 0; i < 8; i++) {
+        const color = (i == 0 || i == 1) ? "negra" : (i === 6 || i === 7) ? "blanca" : "";
+
+        for (let j = 0; j < 8; j++) {
+            const pieza = (i == 1 || i == 6) ? "peon" : (j == 0 || j == 7) ? "torre" : j == 1 || j == 6 ? "caballo" : j == 2 || j == 5 ? "alfil" : j == 3 ? "reina" : "rey"
+            color !== "" ? crearPieza(pieza, color, i, j) : null;
+        }
+    }
+}
+/*function retroceder(){
+
+    const main = document.getElementsByTagName("main")[0]
+    main.removeChild(document.getElementById("tablero"))
+    main.appendChild(turnoAnterior)
+    if(iniciado){
+        player = !player
+    }
+}*/
+function crearPieza(pieza, color, i, j) {
+    const imagen = document.createElement("img");
+    const columna = document.getElementById("casilla" + i + "" + j);
+    color[0] = color[0].toUpperCase();
+    columna.appendChild(imagen);
+    imagen.classList.add(pieza, color, "piezas");
+    imagen.src = "img/" + pieza + color + ".png";
+    imagen.alt = pieza + color;
 }

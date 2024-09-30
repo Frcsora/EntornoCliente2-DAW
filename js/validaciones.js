@@ -1,3 +1,7 @@
+/**
+ * Segundo documento js que se lee, contiene las validaciones de movimiento de las piezas
+ * que seran leidas desde la ejecución del juego
+ */
 function validar(casillaOrigen, casillaDestino, tipo){
     //llamamos a la validación según el tipo de pieza
     //si es la reina tendrá que pasar por la validación de alfil y de torre
@@ -120,24 +124,36 @@ function validarAlfil(casillaOrigen, casillaDestino){
     return false
 }
 
-function validarTorre(casillaOrigen, casillaDestino) {
-    const [x, y] = tomarCoordenadas(casillaOrigen);
-    const [a, b] = tomarCoordenadas(casillaDestino);
+function validarTorre(antiguo, casillaDestino) {
+    let [x, y] = tomarCoordenadas(antiguo);
+    let [a, b] = tomarCoordenadas(casillaDestino);
 
     if ((x == a || y == b)) {
-        /**Uno de los ejes debe ser iguales en ambas casillas, origen y destino */
-        const cambio1 = x != a ? x : y
-        const cambio2 = x != a ? a : b
-        
-        const c = Math.min(cambio1, cambio2);
-        const d = Math.max(cambio1, cambio2);
-        for (let i = c + 1; i < d; i++) {
-            const casilla = document.getElementById("casilla" + i + b);
-            if (casilla.hasChildNodes()) {
-                return false
+        let obstaculo = false;
+        if (x != a) {
+            let c = Math.min(x, a);
+            let d = Math.max(x, a);
+            for (let i = c + 1; i < d; i++) {
+                let casilla = document.getElementById("casilla" + i + b);
+                if (casilla.hasChildNodes()) {
+                    obstaculo = true;
+                    break;
+                }
+            }
+        } else {
+            let c = Math.min(y, b);
+            let d = Math.max(y, b);
+            for (let i = c + 1; i < d; i++) {
+                let casilla = document.getElementById("casilla" + a + i);
+                if (casilla.hasChildNodes()) {
+                    obstaculo = true;
+                    break;
+                }
             }
         }
-        return true
+        if (!obstaculo) {
+            return true
+        }
     }
     return false
 }

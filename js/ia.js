@@ -1,3 +1,6 @@
+/**
+ * Ultimo documento que se lee, en este documento nos encontramos con el funcionamiento de la ia, es lo que esta mas WIP de todo ahora mismo
+ */
 function esSeguro(casilla){
     //funcion que comprueba si la casilla a la que te estas moviendo es segura
     //o te deja expuesto
