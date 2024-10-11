@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Ejercicios</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="botonera">
+        <button id="boton1" onclick="reiniciarEjercicios(); mostrarEjercicio1()" class="boton ejercicio1">Ejercicio 1</button>
+        <button id="boton2" onclick="reiniciarEjercicios(); mostrarEjercicio2()" class="boton ejercicio2">Ejercicio 2</button>
+        <button id="boton3" onclick="reiniciarEjercicios(); mostrarEjercicio3()" class="boton ejercicio3">Ejercicio 3</button>
+        <button id="boton4" onclick="reiniciarEjercicios(); mostrarEjercicio4()" class="boton ejercicio4">Ejercicio 4</button>
+        <button id="boton5" onclick="reiniciarEjercicios(); mostrarEjercicio5()" class="boton ejercicio5">Ejercicio 5</button>
+        <button id="boton6" onclick="reiniciarEjercicios(); mostrarEjercicio6()" class="boton ejercicio6">Ejercicio 6</button>
+        <button id="boton7" onclick="reiniciarEjercicios()" class="boton ejercicio7">Sin ejercicios</button>
+    </header>
+    <main>
+        <article id="ejercicio1" class="ejercicio ejercicio1 oculto">
+            <form>
+                <p>Dime cuantas horas has trabajado y el salario por hora. Calcularé tu sueldo:</p>
+                <form>    
+                    <label for="horas" class="label">Horas:</label><br>
+                    <input type="number" id="horas" class="input"><br>
+                    <label for="precio">Salario por hora:</label><br>
+                    <input type="number" id="precio"><br>
+                    <button onclick="ejercicio1()" id="botonEjercicio1" type="button">Enviar</button>
+                </form>
+                <p class="resultado" id="resultado1"></p>
+            </form>
+        </article>
+        <article id="ejercicio2" class="ejercicio ejercicio2 oculto">
+            <p>Dime tu peso(kg) y altura(cm) y calcularé tu IMC:</p>
+            <form>    
+                <label for="peso" class="label">Peso:</label><br>
+                <input type="number" id="peso" class="input"><br>
+                <label for="altura">Altura:</label><br>
+                <input type="number" id="altura"><br>
+                <button onclick="ejercicio2()" id="botonEjercicio2" type="button">Enviar</button>
+            </form>
+            <p  class="resultado" id="resultado2"></p>
+        </article>
+        <article id="ejercicio3" class="ejercicio ejercicio3 oculto">
+            <p>Dime 2 numeros que dividir y te dire el cociente y el resto:</p>
+                <form>    
+                    <label for="numerador" class="label">Numerador:</label><br>
+                    <input type="number" id="numerador" class="input"><br>
+                    <label for="denominador">Denominador:</label><br>
+                    <input type="number" id="denominador"><br>
+                    <button onclick="ejercicio3()" id="botonEjercicio3" type="button">Enviar</button>
+                </form>
+                <p class="resultado" id="resultado3"></p>
+        </article>
+        <article id="ejercicio4" class="ejercicio ejercicio4 oculto">
+            <p>Digame una cantidad a invertir, interés anual y número de años y calculare las ganancias:</p>
+            <form>    
+                <label for="cantidad" class="label">Cantidad:</label><br>
+                <input type="number" id="cantidad" class="input"><br>
+                <label for="interes">Interes:</label><br>
+                <input type="number" id="interes"><br>
+                <label for="años">Años:</label><br>
+                <input type="number" id="años"><br>
+                <button onclick="ejercicio4()" id="botonEjercicio3" type="button">Enviar</button>
+            </form>
+            <p class="resultado" id="resultado4"></p>
+        </article>
+        <article id="ejercicio5" class="ejercicio ejercicio5 oculto"></article>
+        <article id="ejercicio6" class="ejercicio ejercicio6 oculto"></article>
+    </main>
+    <script src="js.js"></script>
+</body>
+</html>
