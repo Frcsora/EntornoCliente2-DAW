@@ -1,29 +1,41 @@
 body{
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: space-around;
     align-items: flex-start;
     width: 100%;
-    height:100%;
+    height: 100vh;
+    font-size: 40px;
+    overflow-x:hidden;
+    background-color: beige;
+    margin: 0;
+    padding: 0;
 }
 .botonera{
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: space-around;
     align-items: center;
     width: 100%;
     height: 10%;
+    overflow-x: scroll;
+    position: sticky;
+    top: 0;
+    background-color: burlywood;
 }
-.ejercicios{
-    margin:0;
+.boton, .botonEjercicio{
+    width: auto;
+    font-size: 0.6em;
 }
-.main{
+.main-div{
     display:flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
     width: 100%;
-    height: 90%;
+    height: 75%;
+    margin-left: 1%;
+}
+input{
+    font-size: 0.7em;
 }
 .oculto{
     display: none;
@@ -31,6 +43,19 @@ body{
 .mostrado{
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+}
+.lineaCheckbox{
+    display: flex;
+}
+.select{
+    font-size: 0.7em;
+}
+.footer-div{
+    display: flex;
+    justify-content:space-around ;
+    justify-self: flex-end;
+    align-self: flex-end;
+    height: 3%;
+    width: 100%;
+    background-color: aquamarine;
 }

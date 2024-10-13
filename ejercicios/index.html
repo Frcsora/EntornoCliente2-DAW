@@ -7,27 +7,28 @@
 </head>
 <body>
     <header class="botonera">
-        <button id="boton1" onclick="reiniciarEjercicios(); mostrarEjercicio1()" class="boton ejercicio1">Ejercicio 1</button>
-        <button id="boton2" onclick="reiniciarEjercicios(); mostrarEjercicio2()" class="boton ejercicio2">Ejercicio 2</button>
-        <button id="boton3" onclick="reiniciarEjercicios(); mostrarEjercicio3()" class="boton ejercicio3">Ejercicio 3</button>
-        <button id="boton4" onclick="reiniciarEjercicios(); mostrarEjercicio4()" class="boton ejercicio4">Ejercicio 4</button>
-        <button id="boton5" onclick="reiniciarEjercicios(); mostrarEjercicio5()" class="boton ejercicio5">Ejercicio 5</button>
-        <button id="boton6" onclick="reiniciarEjercicios(); mostrarEjercicio6()" class="boton ejercicio6">Ejercicio 6</button>
-        <button id="boton7" onclick="reiniciarEjercicios()" class="boton ejercicio7">Sin ejercicios</button>
+        <button id="boton1" class="boton ejercicio1">Ejercicio 1</button>
+        <button id="boton2" class="boton ejercicio2">Ejercicio 2</button>
+        <button id="boton3" class="boton ejercicio3">Ejercicio 3</button>
+        <button id="boton4" class="boton ejercicio4">Ejercicio 4</button>
+        <button id="boton5" class="boton ejercicio5">Ejercicio 5</button>
+        <button id="boton6" class="boton ejercicio6">Ejercicio 6</button>
+        <button id="boton7" class="boton ejercicio7">Ejercicio 7</button>
+        <button id="boton8" class="boton ejercicio8">Ejercicio 8</button>
+        <button id="boton9" class="boton ejercicio9">Ejercicio 9</button>
+        <button id="boton10" class="boton ejercicio10">Ejercicio 10</button>
     </header>
-    <main>
+    <main class="main-div">
         <article id="ejercicio1" class="ejercicio ejercicio1 oculto">
-            <form>
                 <p>Dime cuantas horas has trabajado y el salario por hora. Calcularé tu sueldo:</p>
                 <form>    
                     <label for="horas" class="label">Horas:</label><br>
                     <input type="number" id="horas" class="input"><br>
                     <label for="precio">Salario por hora:</label><br>
                     <input type="number" id="precio"><br>
-                    <button onclick="ejercicio1()" id="botonEjercicio1" type="button">Enviar</button>
+                    <button class="botonEjercicio" id="botonEjercicio1" type="button">Enviar</button>
                 </form>
                 <p class="resultado" id="resultado1"></p>
-            </form>
         </article>
         <article id="ejercicio2" class="ejercicio ejercicio2 oculto">
             <p>Dime tu peso(kg) y altura(cm) y calcularé tu IMC:</p>
@@ -36,7 +37,7 @@
                 <input type="number" id="peso" class="input"><br>
                 <label for="altura">Altura:</label><br>
                 <input type="number" id="altura"><br>
-                <button onclick="ejercicio2()" id="botonEjercicio2" type="button">Enviar</button>
+                <button class="botonEjercicio" id="botonEjercicio2" type="button">Enviar</button>
             </form>
             <p  class="resultado" id="resultado2"></p>
         </article>
@@ -47,12 +48,12 @@
                     <input type="number" id="numerador" class="input"><br>
                     <label for="denominador">Denominador:</label><br>
                     <input type="number" id="denominador"><br>
-                    <button onclick="ejercicio3()" id="botonEjercicio3" type="button">Enviar</button>
+                    <button class="botonEjercicio" id="botonEjercicio3" type="button">Enviar</button>
                 </form>
                 <p class="resultado" id="resultado3"></p>
         </article>
         <article id="ejercicio4" class="ejercicio ejercicio4 oculto">
-            <p>Digame una cantidad a invertir, interés anual y número de años y calculare las ganancias:</p>
+            <p>Dime una cantidad a invertir, interés anual y número de años y calculare las ganancias:</p>
             <form>    
                 <label for="cantidad" class="label">Cantidad:</label><br>
                 <input type="number" id="cantidad" class="input"><br>
@@ -60,13 +61,92 @@
                 <input type="number" id="interes"><br>
                 <label for="años">Años:</label><br>
                 <input type="number" id="años"><br>
-                <button onclick="ejercicio4()" id="botonEjercicio3" type="button">Enviar</button>
+                <button class="botonEjercicio" id="botonEjercicio4" type="button">Enviar</button>
             </form>
             <p class="resultado" id="resultado4"></p>
         </article>
-        <article id="ejercicio5" class="ejercicio ejercicio5 oculto"></article>
-        <article id="ejercicio6" class="ejercicio ejercicio6 oculto"></article>
+        <article id="ejercicio5" class="ejercicio ejercicio5 oculto">
+            <p>Dime la cantidad de payaso y muñecas y calcularé el peso</p>
+                <form>    
+                    <label for="payasos" class="label">Payasos:</label><br>
+                    <input type="number" id="payasos" class="input"><br>
+                    <label for="muñecas">Muñecas:</label><br>
+                    <input type="number" id="muñecas"><br>
+                    <button class="botonEjercicio" id="botonEjercicio5" type="button">Enviar</button>
+                </form>
+                <p class="resultado" id="resultado5"></p>
+        </article>
+        <article id="ejercicio6" class="ejercicio ejercicio6 oculto">
+            <p>Dime cuantas barras de pan del dia anterior se han vendido y cuantas en total:</p>
+                <form>    
+                    <label for="barrasDiaAnterior" class="label">Barra del dia anterior:</label><br>
+                    <input type="number" id="barrasDiaAnterior" class="input"><br>
+                    <label for="barras">Barras totales:</label><br>
+                    <input type="number" id="barras"><br>
+                    <button class="botonEjercicio" id="botonEjercicio6" type="button">Enviar</button>
+                </form>
+                <p class="resultado" id="resultado6"></p>
+        </article>
+        <article id="ejercicio7" class="ejercicio ejercicio7 oculto">
+                <p>Acierta las 3 preguntas</p>
+                <form>   
+                    <label for="primeraPregunta" class="label">Primera pregunta: 2 + 2 es 4?</label>
+                    <select id="primeraPregunta" class="select">
+                        <option value="si">Si</option>
+                        <option value="no">No</option>
+                    </select>
+                    <br>
+                    <label for="segundaPregunta">Segunda pregunta: 7 * 5 es 42?</label>
+                    <select id="segundaPregunta" class="select">
+                        <option value="si">Si</option>
+                        <option value="no">No</option>
+                    </select>
+                    <br>
+                    <label for="terceraPregunta">Tercera pregunta: 15 es un numero impar?</label>
+                    <select id="terceraPregunta" class="select">
+                        <option value="si">Si</option>
+                        <option value="no">No</option>
+                    </select>
+                    <br>
+                    <button class="botonEjercicio" id="botonEjercicio7" type="button">Enviar</button>
+                </form>
+                <p class="resultado" id="resultado7"></p>
+        </article>
+        <article id="ejercicio8" class="ejercicio ejercicio8 oculto">
+            <p>Escribe tu usuario y contraseña</p>
+                <form>    
+                    <label for="nameEjercicio8" class="label">Nombre:</label><br>
+                    <input type="text" id="nameEjercicio8" class="input"><br>
+                    <label for="passwordEjercicio8">Contraseña:</label><br>
+                    <input type="password" id="passwordEjercicio8"><br>
+                    <button class="botonEjercicio" id="botonEjercicio8" type="button">Enviar</button>
+                </form>
+                <p class="resultado" id="resultado8"></p>
+        </article>
+        <article id="ejercicio9" class="ejercicio ejercicio9 oculto">
+            <p>Puntua este ejercicio de 1 a 10</p>
+                <form>    
+                    <label for="nota" class="label">Nota:</label><br>
+                    <input type="number" id="nota" class="input"><br>
+                    <button class="botonEjercicio" id="botonEjercicio9" type="button">Enviar</button>
+                </form>
+                <p class="resultado" id="resultado9"></p>
+        </article>
+        <article id="ejercicio10" class="ejercicio ejercicio10 oculto">
+            <p>Introduce la nota de la evaluacion</p>
+                <form>    
+                    <label for="notaEjercicio10" class="label">Nota:</label><br>
+                    <input type="number" id="notaEjercicio10" class="input"><br>
+                    <button class="botonEjercicio" id="botonEjercicio10" type="button">Enviar</button>
+                </form>
+                <p class="resultado" id="resultado10"></p>
+        </article>
     </main>
+    <footer class="footer-div">
+        <span>Francesc Sorà Quevedo</span>
+        <span>Desarrollo en Entorno Cliente</span>
+        <span>IFC 33-B</span>
+    </footer>
     <script src="js.js"></script>
 </body>
 </html>
