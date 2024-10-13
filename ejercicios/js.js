@@ -11,7 +11,7 @@ document.addEventListener('click', function(evento){//Gestión de los botones
         reiniciarEjercicios();//Esconde todos los ejercicios con display: none
         let numeroEjercicio = id.charAt(id.length - 1);//Reconoce el ejercicio a mostrar a través de la id
         numeroEjercicio = numeroEjercicio == 0 ? 10 : numeroEjercicio;//Si la variable anterior es 0 es porque es el ejercicio 10
-        const ejercicio = document.getElementById(`ejercicio${numeroEjercicio}`)
+        const ejercicio = document.getElementById(`ejercicio${numeroEjercicio}`);
         mostrarEjercicio(ejercicio);//Muestra el ejercicio asociado al botón seleccionado con display:flex
         //De esta manera conseguimos que solo se vea un ejercicio
     }
@@ -45,10 +45,12 @@ function reiniciarEjercicios(){
         if(ejercicios[i].classList.contains("mostrado")){
             ejercicios[i].classList.remove("mostrado");
             ejercicios[i].classList.add("oculto");
+
             if(resultados[i] !== ""){
                 resultados[i].innerText = ""//Al cambiar de ejercicios reiniciamos los resultados para que quede en blanco
             }
-            elementoClicado.parentNode.reset();//Reinicio del formulario al cambiar de ejercicio
+            ejercicios[i].childNodes[3].reset();//Reinicio del formulario al cambiar de ejercicio
+            //En la linea anterior tuve que hacer un log para asegurarme de que elemento concreto de todos los ejercicios era el form
         }
     }
 }
