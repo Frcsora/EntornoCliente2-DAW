@@ -8,14 +8,16 @@ document.addEventListener('click', function(evento){//Gestión de los botones
     const elementoClicado = evento.target;
     const id = elementoClicado.id;
     if(elementoClicado.classList.contains("boton")){//Gestión botones del menu
-        reiniciarEjercicios();//Esconde todos los ejercicios
+        reiniciarEjercicios();//Esconde todos los ejercicios con display: none
         let numeroEjercicio = id.charAt(id.length - 1);//Reconoce el ejercicio a mostrar a través de la id
         numeroEjercicio = numeroEjercicio == 0 ? 10 : numeroEjercicio;//Si la variable anterior es 0 es porque es el ejercicio 10
         const ejercicio = document.getElementById(`ejercicio${numeroEjercicio}`)
-        mostrarEjercicio(ejercicio);//Muestra el ejercicio asociado al botón seleccionado
+        mostrarEjercicio(ejercicio);//Muestra el ejercicio asociado al botón seleccionado con display:flex
+        //De esta manera conseguimos que solo se vea un ejercicio
     }
     if(elementoClicado.classList.contains("botonEjercicio")){//Gestión de submit
-        let resultado = elementoClicado.parentNode.nextElementSibling//Por la estructura de mi HTML, el siguiente hermano del padre de los botones de Submit es donde se encuentra el resultado siempre
+        let resultado = elementoClicado.parentNode.nextElementSibling
+        //Por la estructura de mi HTML, el siguiente hermano del padre de los botones de Submit es donde se encuentra el div que muestra el resultado en todos los casos
         id === "botonEjercicio1" ? ejercicio1(resultado) :
         id === "botonEjercicio2" ? ejercicio2(resultado) :
         id === "botonEjercicio3" ? ejercicio3(resultado) :
@@ -27,40 +29,39 @@ document.addEventListener('click', function(evento){//Gestión de los botones
         id === "botonEjercicio9" ? ejercicio9(resultado) :
         id === "botonEjercicio10" ? ejercicio10(resultado) :
         null;//Preguntar sobre esto
-        elementoClicado.parentNode.reset();//Reinicio del formulario al cambiar de ejercicio
+        elementoClicado.parentNode.reset();//Reinicio del formulario al hacer submit
     }
 })
 function mostrarEjercicio(ejercicio){
     if(ejercicio.classList.contains("oculto")){
-        ejercicio.classList.remove("oculto")
-        ejercicio.classList.add("mostrado")
-        
+        ejercicio.classList.remove("oculto")//display none
+        ejercicio.classList.add("mostrado")//display flex
     }
 }
 function reiniciarEjercicios(){
     const ejercicios = document.getElementsByClassName("ejercicio");
     const resultados = document.getElementsByClassName("resultado")
     for(let i = 0 ; i < ejercicios.length ; i++){
-
         if(ejercicios[i].classList.contains("mostrado")){
             ejercicios[i].classList.remove("mostrado");
             ejercicios[i].classList.add("oculto");
             if(resultados[i] !== ""){
                 resultados[i].innerText = ""//Al cambiar de ejercicios reiniciamos los resultados para que quede en blanco
             }
+            elementoClicado.parentNode.reset();//Reinicio del formulario al cambiar de ejercicio
         }
     }
 }
 
 
-//Aquí empiezan los ejercicios
+//Aqui empiezan los ejercicios
 function ejercicio1(resultado){
     const horas = document.getElementById("horas").value;
     const precio = document.getElementById("precio").value;
     const precioTotal = horas * precio;
 
-    if((horas > 0 && horas != "") 
-        && (precio > 0 && precio != "")){
+    if(horas > 0 
+        && precio > 0){
         resultado.textContent = `El salario por ${horas} horas a ${precio} por hora es de ${precioTotal} euros.`
     } else{
         resultado.textContent = "No son opciones validas"
@@ -73,8 +74,8 @@ function ejercicio2(resultado){
     const imc = peso / ((altura / 100) ** 2);
 
     resultado.innerText = `Tu IMC es ${imc}`;
-    if((peso > 0 && peso != "") 
-        && (altura > 0 && altura != "")){
+    if(peso > 0 
+        && altura > 0){
             resultado.innerText = `Tu IMC es ${imc.toFixed(2)}`;
     } else{
         resultado.textContent = "No son opciones validas"
@@ -104,9 +105,8 @@ function ejercicio4(resultado){
     for(let i = 0 ; i < años ; i++){
         cantidad += cantidad * (interes/100);
     }
-    if((cantidad > 0 && cantidad !== "")
-        && (interes !== "")
-        && (años > 0 && años !== "")){
+    if(cantidad > 0
+        && (años > 0)){
             resultado.innerText = `El beneficio final será de ${cantidad.toFixed(2)}`;
     }else{
         resultado.textContent = "No son opciones validas"
@@ -116,12 +116,12 @@ function ejercicio4(resultado){
 function ejercicio5(resultado){
     const pesoPayaso = 112;
     const pesoMuñeca = 75;
-    const payasos = parseInt(document.getElementById("payasos").value)
-    const muñecas = parseInt(document.getElementById("muñecas").value)
+    const payasos = document.getElementById("payasos").value;
+    const muñecas = document.getElementById("muñecas").value;
     const pesoTotal = (pesoPayaso * payasos) + (pesoMuñeca * muñecas);
 
-    if(payasos !== ""
-        && muñecas !== ""
+    if(payasos > 0
+        && muñecas > 0
     ){
         resultado.innerText = `El peso total para ${payasos} payasos y ${muñecas} muñecas es de ${pesoTotal} gramos.`
     } else {
@@ -143,8 +143,8 @@ function ejercicio6(resultado){
     const beneficioBarrasTotales = beneficioBarrasDiaAnterior + beneficioBarrasDia;
     const beneficioSiTodoDia = barrasTotales * precioBarra;
 
-    if(barrasDiaAnterior !== ""
-        && barrasTotales !== ""
+    if((barrasDiaAnterior > 0)
+        && (barrasTotales > 0)
     ){
         if(barrasDiaAnterior > barrasTotales){
             resultado.innerText = `No se pueden vender mas barras del dia anterior que totales`;
@@ -193,7 +193,7 @@ function ejercicio7(resultado){
 function ejercicio8(resultado){
     const nombreCorrecto = "francesc"
     const passCorrecta = "sora"
-    const nombre = document.getElementById("nameEjercicio8").value.toLowerCase() 
+    const nombre = document.getElementById("nameEjercicio8").value.toLowerCase()//De esta manera lo tomará como correcto independientemente de si escribe alguna mayuscula
     const password = document.getElementById("passwordEjercicio8").value
 
     if(nombre === nombreCorrecto
