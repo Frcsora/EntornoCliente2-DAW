@@ -55,7 +55,9 @@ input{
     justify-content:space-around ;
     justify-self: flex-end;
     align-self: flex-end;
+    align-items: center;
     height: 3%;
     width: 100%;
     background-color: aquamarine;
+    font-size: 0.5em;
 }
