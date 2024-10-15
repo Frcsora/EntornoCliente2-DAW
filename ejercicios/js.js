@@ -9,7 +9,7 @@ document.addEventListener('click', function(evento){//Gestión de los botones
     const id = elementoClicado.id;
     if(elementoClicado.classList.contains("boton")){//Gestión botones del menu
         reiniciarEjercicios();//Esconde todos los ejercicios con display: none
-        let numeroEjercicio = id.slice(5);//Quitamos la palabras boton y dejamos el numero
+        const numeroEjercicio = id.slice(5);//Quitamos la palabras boton y dejamos el numero
         const ejercicio = document.getElementById(`ejercicio${numeroEjercicio}`);
         mostrarEjercicio(ejercicio);//Muestra el ejercicio asociado al botón seleccionado con display:flex
         //De esta manera conseguimos que solo se vea un ejercicio
