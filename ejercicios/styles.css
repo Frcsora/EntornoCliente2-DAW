@@ -1,7 +1,7 @@
 body{
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: flex-start;
     width: 100%;
     height: 100vh;
@@ -14,6 +14,7 @@ body{
 .botonera{
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     justify-content: space-around;
     align-items: center;
     width: 100vw;
@@ -49,16 +50,4 @@ input{
 }
 .select{
     font-size: 0.7em;
-}
-.footer-div{
-    display: flex;
-    justify-content:space-around ;
-    justify-self: flex-end;
-    align-self: flex-end;
-    align-items: center;
-    height: 3%;
-    width: 100%;
-    background-color: aquamarine;
-    font-size: 0.5em;
-    bottom: 0;
 }
