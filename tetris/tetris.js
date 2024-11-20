@@ -43,3 +43,13 @@ function inicializarTablero(){
     return array;
 }
 let tablero = inicializarTablero();
+function dibujarTablero(){
+    for(let i = 0 ; i < tablero.length ; i++){
+        for(let j = 0 ; j < tablero[i].length ; j++){
+            if(tablero[i][j] === 1){
+                lienzo.fillStyle = "grey";
+                lienzo.fillRect(j * tamañoCelda, i* tamañoCelda, tamañoCelda, tamañoCelda)
+            }
+        }
+    }
+}
