@@ -21,21 +21,21 @@ const columnas = 10;
 const tamañoCelda = 30;
 
 for(let i = 0 ; i < piezas[3].forma.length ; i++){
-    for(let j = 0 ; j < piezas[3].forma[1].length ; j++){
-        if(piezas[3].forma[i][j] == 1){
+    for(let j = 4 ; j < piezas[3].forma[1].length + 4; j++){
+        if(piezas[3].forma[i][j - 4] == 1){
             lienzo.fillStyle = piezas[3].color;
-            lienzo.fillRect(i * 30, j * 30, tamañoCelda, tamañoCelda);
+            lienzo.fillRect(j * 30, i * 30, tamañoCelda, tamañoCelda);
         }
     }
 }
 
 
-
+console.log(lienzo.fillStyle == "red")
 function inicializarTablero(){
     let array = [];
-    for(let index = 0 ; index < filas ; index++){
+    for(let index = 0 ; index < columnas ; index++){
         let fila = [];
-        for(let jindex = 0 ; jindex < columnas ; jindex++){
+        for(let jindex = 0 ; jindex < filas ; jindex++){
             fila.push(0);
         }
         array.push(fila);
