@@ -20,12 +20,6 @@ const filas = 20;//height canvas = 600, 20 filas /600 px = 30px por fila(tamaño
 const columnas = 10;//width canvas = 300, 10 columnas / 300 px = 30px por columna(tamañoCelda)
 const tamañoCelda = 30;//tamaño en pixeles de la pieza
 
-/*
-    El tablero se compone de:
-    0: vacio
-    1: ocupado por una pieza ya caida
-    2: ocupado por la pieza que esta cayendo
-*/
 let tablero = inicializarTablero();//el tablero se inicializa con todo 0
 let siguientePieza = generarPieza();//se elige la siguiente pieza que va a salir
 let avancePieza = 1;//El patron de inicializacion y posiciones que deben avanzar las piezas a cada iteracion
