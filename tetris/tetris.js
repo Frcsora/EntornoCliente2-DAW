@@ -27,10 +27,10 @@ const tamañoCelda = 30;//tamaño en pixeles de la pieza
     2: ocupado por la pieza que esta cayendo
 */
 let tablero = inicializarTablero();//el tablero se inicializa con todo 0
-let siguientePieza = nuevaPieza();//se elige la siguiente pieza que va a salir
+let siguientePieza = generarPieza();//se elige la siguiente pieza que va a salir
 let avancePieza = 1;//El patron de inicializacion y posiciones que deben avanzar las piezas a cada iteracion
 let horizontalPieza = parseInt(tablero[0].length / 2);//La posicion inicial de las piezas en el eje Y
-function nuevaPieza(){
+function generarPieza(){
     //Elige cual sera la siguiente pieza que sale, tiene en cuenta la probabilidad de que salga cada pieza
     const resultado = Math.random()
     let sumatorio = 0;
@@ -48,46 +48,69 @@ function nuevaPieza(){
     }
 }
 
-
 setInterval(() =>{
     //Todo el turno de caida de una pieza
-    console.log(tablero)
-    tablero = limpiarTablero(tablero);
-    tablero = dibujoPieza(tablero, avancePieza - siguientePieza.forma.length, horizontalPieza -(parseInt(siguientePieza.forma.length / 2)), siguientePieza);
-    avancePieza++;
-    if(avancePieza > tablero.length) {
-        avancePieza = 1;
-        siguientePieza = nuevaPieza();
+
+    dibujarTablero();
+    dibujoPieza(avancePieza - siguientePieza.forma.length, horizontalPieza -(parseInt(siguientePieza.forma.length / 2)), siguientePieza);
+    if(chequearColisiones(siguientePieza, avancePieza, horizontalPieza)){
+        insertarPieza(siguientePieza, avancePieza - siguientePieza.forma.length, horizontalPieza)
+        avancePieza = 0;
+        siguientePieza = generarPieza();
     }
+    avancePieza++;
+    
 }, 500)
-function limpiarTablero(tablero){
+function insertarPieza(pieza, x, y){
+    for(let i = 0 ; i < pieza.forma.length ; i++){
+        for(let j = 0 ; j < pieza.forma[i].length ; j++){
+            if(pieza.forma[i][j] == 1){
+                console.log("y: ", y, "j: ", j)
+                tablero[x + i][y + j - 1] = 1;
+            }
+        }
+    }
+    //Problema con las L, la siguiente pieza se come todo menos la fila de abajo de la l
+}
+function dibujarTablero(){
     //reinicia el tablero poniendo todo lo que no sean fichas anteriormente ya caidas como espacios vacios, para permitir dibujar el siguiente intervalo sin que se acumule con el anterior
     for(i = 0 ; i < tablero.length ; i++){
         for(j = 0 ; j < tablero[i].length ; j++){
-            if(tablero[i][j] != 1) tablero[i][j] = 0;
-            lienzo.fillStyle = "black";
-            lienzo.fillRect(j * tamañoCelda, i * tamañoCelda, tamañoCelda, tamañoCelda);
+            if(tablero[i][j] != 1){
+                lienzo.fillStyle = "black";
+                lienzo.fillRect(j * tamañoCelda, i * tamañoCelda, tamañoCelda, tamañoCelda);
+                tablero[i][j] = 0;
+            } else{
+                lienzo.fillStyle = "grey"
+                lienzo.fillRect(j * tamañoCelda, i * tamañoCelda, tamañoCelda, tamañoCelda);
+            }
+            
         }
     }
-    return tablero;
+    
+
 }
-function dibujoPieza(tablero, inicioV, inicioH, pieza){
+
+function dibujoPieza(x, y, pieza){
     //dibuja la situacion en la presente iteracion del intervalo
     for(let i = pieza.forma.length - 1 ; i >= 0 ; i--){
         if(i < 0) continue;
         for(let j = 0 ; j < pieza.forma[i].length ; j++){
-            if(pieza.forma[i][j] == 1){
-                /*if(i + inicioV >= 0){
-                    console.log("i: ", i + inicioV, "\nj: ", j + inicioH)
-                    tablero[i + inicioV][j + inicioH] = 2;   
-                }*/
-                
+            if(pieza.forma[i][j] == 1){                
                 lienzo.fillStyle = pieza.color;
-                lienzo.fillRect((j + inicioH) * tamañoCelda, (i + inicioV)* tamañoCelda, tamañoCelda, tamañoCelda);
+                lienzo.fillRect((j + y) * tamañoCelda, (i + x)* tamañoCelda, tamañoCelda, tamañoCelda);
             }
         }
     }
-    return tablero;
+}
+
+function chequearColisiones(pieza, x, y){
+    for(let i = 0 ; i < pieza.forma[0].length;i++){
+        if(x >= filas || tablero[x][y + i] == 1) return true
+    }
+
+    
+    return false;
 }
 
 function inicializarTablero(){
@@ -102,4 +125,3 @@ function inicializarTablero(){
     }
     return array;
 }
-
