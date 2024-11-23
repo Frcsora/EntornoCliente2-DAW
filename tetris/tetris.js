@@ -38,10 +38,12 @@ const tamañoCelda = 30;//tamaño en pixeles de la pieza
 
 
 let tablero = inicializarTablero();//el tablero se inicializa con todo 0
-let siguientePieza = generarPieza();//se elige la siguiente pieza que va a salir
-let x = 1;//El patron de inicializacion y posiciones que deben avanzar las piezas a cada iteracion
+let piezaActual = generarPieza();//se elige la siguiente pieza que va a salir
+let x = -1;//El patron de inicializacion y posiciones que deben avanzar las piezas a cada iteracion
 let y = parseInt(tablero[0].length / 2);//La posicion inicial de las piezas en el eje Y
-
+let puntuacion = 0;
+let puntuacionDiv = document.getElementById("puntuacion")
+puntuacionDiv.innerText = "Puntos: " + puntuacion
 lienzo.strokeStyle = "white";
 function generarPieza(){
     //Elige cual sera la siguiente pieza que sale, tiene en cuenta la probabilidad de que salga cada pieza
@@ -71,38 +73,33 @@ function jugar(){
     actualizar();
 }
 function actualizar(){
-    if(y + siguientePieza.forma[0].length > 19){
+    siguientePieza = generarPieza();
+    x++;
+    if(y + piezaActual.forma[0].length > 19){
         y--;
     }
-    dibujoPieza(siguientePieza, x - siguientePieza.forma.length, y -(parseInt(siguientePieza.forma.length / 2)));
+    dibujoPieza(piezaActual, x, y -(parseInt(piezaActual.forma.length / 2)));
     
-    if(chequearColisiones(siguientePieza, x, y)){
-        insertarPieza(siguientePieza, x - siguientePieza.forma.length, y)
-        x = 0;
-        siguientePieza = generarPieza();
+    if(chequearColisiones(piezaActual, x, y)){
+        insertarPieza(piezaActual, x, y)
+        x = -1;
+        piezaActual = siguientePieza;
     }
     
-    x++;
+    
 }
 function insertarPieza(pieza, x, y){
-    try {
-        for (let i = 0; i < pieza.forma.length; i++) {
-            for (let j = 0; j < pieza.forma[i].length; j++) {
-                if (tablero[x + i] === undefined || tablero[x + i][y + j - 1] === undefined) {
-                    throw new Error("Se acabó la partida");
-                }
-                if (pieza.forma[i][j] == 1) {
-                    tablero[x + i][y + j - 1] = 1;
-                }
+    for (let i = 0; i < pieza.forma.length; i++) {
+        for (let j = 0; j < pieza.forma[i].length; j++) {
+            if (tablero[x + i] === undefined || tablero[x + i][y + j - 1] === undefined) {
+                throw new Error("Se acabó la partida");
+            }
+            if (pieza.forma[i][j] == 1) {
+                tablero[x + i][y + j - 1] = 1;
             }
         }
-        eliminarLinea
-    } catch (error) {
-        clearInterval(juego);
-        document.getElementById("mensaje-final").innerText = error.message; 
-        document.getElementById("mensaje-final").style.backgroundColor = "yellow"; 
-        document.getElementById("mensaje-final").style.textAlign = "center"; 
     }
+    eliminarLinea()
     
 }
 function eliminarLinea(){
@@ -118,6 +115,8 @@ function eliminarLinea(){
             }
         }
     }
+    puntuacion += 350;
+    puntuacionDiv.innerText = "Puntos: " + puntuacion;
 }
 function dibujarTablero(){
     //reinicia el tablero poniendo todo lo que no sean fichas anteriormente ya caidas como espacios vacios, para permitir dibujar el siguiente intervalo sin que se acumule con el anterior
@@ -154,13 +153,17 @@ function dibujoPieza(pieza, x, y){
 
 function chequearColisiones(pieza, x, y){
     for(let i = 0 ; i < pieza.forma.length;i++){
-        console.log(x)
+       
         for(let j = 0 ; j < pieza.forma[i].length ; j++){
-            
-            if( x >= filas ) return true;
-            if(pieza.forma[i][j] == 1){
-                if(tablero[i + x][j + y] == 1) return true
+            try{
+                if(tablero[x + i + 1] === undefined) throw new Error(); 
+                if(tablero[x + i + 1][y] == 1){
+                    return true
+                }
+            }catch(error){
+                return true
             }
+            
         }
     }
     return false;
@@ -195,16 +198,16 @@ document.addEventListener("keypress", (event) => {
         (tablero[x][y - 1] !== undefined && tablero[x][y - 1] !== 1)){
         y--;
     }
-    if((event.key == "d" || event.key == "D") && y <= tablero[0].length - siguientePieza.forma[0].length){
+    if((event.key == "d" || event.key == "D") && y <= tablero[0].length - piezaActual.forma[0].length){
         y++;
     }
     if(event.key == "s" ||event.key == "S" && x < filas){
         if(x >= 20) x = 19
-        if(!chequearColisiones(siguientePieza, x, y)){
+        if(!chequearColisiones(piezaActual, x + 1, y)){
             x++;    
         }        
     }
     if(event.key == "w" || event.key == "W"){
-        siguientePieza.girarPieza();
+        piezaActual.girarPieza();
     }
 })
