@@ -1,12 +1,19 @@
 class Pieza{
-    constructor(nombre, forma, probabilidad, color){
+    //Atributos requeridos por el ejercicios
+    /*Decir que con estos atributos, al rotar una pieza, esta se quedara rotada para la próxima vez que aparezca. Se podría evitar con un atributo "formaOriginal" y
+     haciendo que la forma vuelva al original cada vez, pero me parece más divertido que la siguiente vez que aparezca la misma pieza sea en la posición que se quedó la última vez
+    */
+   constructor(nombre, forma, probabilidad, color){
         this.nombre = nombre;
         this.forma = forma;
         this.probabilidad = probabilidad;
         this.color = color;
     }
+    //Métodos que utilizo para rotar la pieza
     girarPieza() {
+        /**Creo un nuevo array para guardar la forma que deberá tomar al rotar */
         let nuevaForma = [];
+        
         for(let i = this.forma[0].length - 1 ; i >= 0 ; i--){
             let nuevaFila = [];
             for(let j = 0 ; j < this.forma.length ; j++){
@@ -14,7 +21,6 @@ class Pieza{
             }
             nuevaForma.push(nuevaFila);
         }
-        
         this.forma = nuevaForma
     }
     desgirarPieza() {
@@ -29,12 +35,24 @@ class Pieza{
         
         this.forma = nuevaForma
     }
+    
     validarGiro(tablero, x, y){
+        const yInicial = y;
+        const ancho1 = this.forma[0].length;
         this.girarPieza();
+        const ancho2 = this.forma[0].length;
+        if(ancho1 < ancho2 && yInicial == 9) y--;
         for(let i = 0 ; i < this.forma.length ; i++){
             for(let j = 0 ; j < this.forma[i].length ; j++){
                 if(this.forma[i][j] === 1){
-                    if(tablero[i + x + 1][j + y] === 1) {
+                    try{
+                        if(tablero[x + i] == undefined) throw new Error();
+                        if(tablero[i + x + 1][j + y] == 1 || (tablero[i + x][j + y] == undefined)) {
+                            if(ancho1 < ancho2 && yInicial == 9) y++;
+                            this.desgirarPieza();
+                            return false;
+                        }
+                    }catch(error){
                         this.desgirarPieza();
                         return false;
                     }
@@ -83,7 +101,7 @@ const audio = document.getElementById("audio");
 const botonAudio = document.getElementById("musica");
 juego = setInterval(() => jugar(), velocidad);//Se inicializa el juego
 let proximoCambio = 1000;
-let musicaOn = true;
+let musicaOn = false;
 const imagenesMusica= [
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--!Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M301.1 34.8C312.6 40 320 51.4 320 64l0 384c0 12.6-7.4 24-18.9 29.2s-25 3.1-34.4-5.3L131.8 352 64 352c-35.3 0-64-28.7-64-64l0-64c0-35.3 28.7-64 64-64l67.8 0L266.7 40.1c9.4-8.4 22.9-10.4 34.4-5.3zM425 167l55 55 55-55c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-55 55 55 55c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-55-55-55 55c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l55-55-55-55c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0z"/></svg>',
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M499.1 6.3c8.1 6 12.9 15.6 12.9 25.7l0 72 0 264c0 44.2-43 80-96 80s-96-35.8-96-80s43-80 96-80c11.2 0 22 1.6 32 4.6L448 147 192 223.8 192 432c0 44.2-43 80-96 80s-96-35.8-96-80s43-80 96-80c11.2 0 22 1.6 32 4.6L128 200l0-72c0-14.1 9.3-26.6 22.8-30.7l320-96c9.7-2.9 20.2-1.1 28.3 5z"/></svg>'
@@ -91,7 +109,29 @@ const imagenesMusica= [
 
 dibujarSiguiente(siguientePieza);
 dibujarTablero();
-
+function aplicarCss(){
+    const body = document.getElementsByTagName("body")[0];
+    const div = document.getElementById("div");
+    const punt = document.getElementById("puntuacion");
+    const musica = document.getElementById("musica");
+    const svg = document.getElementsByTagName("svg")[0];
+    body.style.backgroundImage = "url(prado-1.webp)";
+    body.style.backgroundSize = "cover";
+    body.style.backgroundPosition = "center";
+    body.style.backgroundRepeat = "no-repeat";
+    punt.style.backgroundColor = "black";
+    punt.style.color = "white";
+    punt.style.textAlign = "center";
+    div.style.display = "flex";
+    div.style.flexDirection = "column";
+    div.style.width = "100%";
+    div.style.height = "9vh";
+    div.style.alignItems = "center";
+    div.style.gap = "5%";
+    musica.style.width = "3%";
+    svg.style.width = "100%";
+    svg.style.height = "auto";
+}
 function mostrarInstrucciones(){
     if(botonPausa.innerText != "Reiniciar"){
         if(botonPausa.innerText == "Pausa"){
@@ -153,7 +193,6 @@ function jugar(){
 }
 function actualizar(){
     x++;
-
     if(finalizar(piezaActual, x, y)){
         botonPausa.innerText = "Reiniciar";
         puntuacionDiv.innerText = `Se acabó la partida!\n Conseguiste ${puntuacion} puntos!`;
@@ -203,8 +242,8 @@ function eliminarLinea(){
                 tablero.splice(i, 1)
                 i--;
                 lineasEliminadas++;
-                nuevaFila = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-                tablero.unshift(nuevaFila)
+                nuevaFila = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+                tablero.unshift(nuevaFila);
                 
             }
         }
@@ -244,7 +283,6 @@ function dibujarTablero(){
 
 function dibujoPieza(pieza, x, y){
     //dibuja la situacion en la presente iteracion del intervalo
-    
     for(let i = pieza.forma.length - 1 ; i >= 0 ; i--){
         if(i < 0) continue;
         for(let j = 0 ; j < pieza.forma[i].length ; j++){
@@ -333,15 +371,29 @@ function pararMusica(){
     }
 }
 function tableroFinal(){
-    let array = [];
-    for(let i = 0 ; i < tablero.length ; i++){
-        let fila = []
-        for(let j = 0 ; j < tablero[0].length ; j++){
-            fila.push(1);
-        }
-        array.push(fila);
-    }
-    return array;
+    return [
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [0, 0, 0, 1, 0, 0, 1, 0, 0, 0],
+        [0, 1, 1, 0, 1, 0, 0, 0, 0, 1],
+        [0, 1, 0, 0, 0, 0, 1, 0, 0, 0],
+        [0, 1, 0, 0, 1, 0, 1, 0, 0, 1],
+        [0, 0, 0, 0, 1, 0, 1, 0, 0, 0],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 0, 1, 0, 1, 0, 0, 0, 0, 0],
+        [0, 1, 0, 0, 1, 0, 1, 0, 1, 0],
+        [0, 1, 0, 0, 1, 0, 0, 0, 0, 1],
+        [0, 1, 0, 0, 1, 0, 1, 0, 1, 0],
+        [1, 0, 1, 1, 0, 1, 0, 0, 1, 0],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    ];
 }
 function pausarReiniciar(){
     if(botonPausa.innerText == "Pausa"){
@@ -368,10 +420,6 @@ function pausarReiniciar(){
     }
 }
 document.addEventListener("keypress", (event) => {
-
-    if(event.key == "i" || event.key == "I") mostrarInstrucciones();
-    if(event.key == "m" || event.key == "M") pararMusica()
-    if(event.key == "p" || event.key == "P") pausarReiniciar();
     if((event.key == "a" || event.key == "A") 
         &&!chequearColisionesLaterales(piezaActual, x, y - 1, false) && botonPausa.innerText == "Pausa"){
         y--;
@@ -385,12 +433,20 @@ document.addEventListener("keypress", (event) => {
             x++;    
         }        
     }
-    if((event.key == "w" || event.key == "W" )&& botonPausa.innerText == "Pausa" &&
+})
+document.addEventListener("keyup", (event) =>{
+    if(event.key == "i" || event.key == "I") mostrarInstrucciones();
+    if(event.key == "m" || event.key == "M") pararMusica()
+    if(event.key == "p" || event.key == "P") pausarReiniciar();
+    if((event.key == "w" || event.key == "W" ) && 
+        botonPausa.innerText == "Pausa" && 
         piezaActual.validarGiro(tablero, x, y)){
+        
         piezaActual.girarPieza();
         if(piezaActual.forma[0].length === 3 && y === 9) y--;
     }
 })
+addEventListener("load", () => aplicarCss())//El evento load no necesita que le pongas document porque sucede directamente desde el objeto window, el cual se aplica por defecto, seria correcto tambien hacer "window.addEventListener()" pero no es necesario
 botonAudio.addEventListener('click', () => pararMusica())
 botonPausa.addEventListener('click', () => pausarReiniciar())
 document.getElementById("instrucciones").addEventListener('click', () => mostrarInstrucciones());
