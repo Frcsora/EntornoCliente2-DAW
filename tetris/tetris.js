@@ -11,7 +11,12 @@ class Pieza{
     }
     //Métodos que utilizo para rotar la pieza
     girarPieza() {
-        /**Creo un nuevo array para guardar la forma que deberá tomar al rotar */
+        /**
+         * Creo un nuevo array para guardar la forma que deberá tomar al rotar
+         * la nueva forma debera tener en el el horizontal la misma longitud que tenia al antigua en el vertical y viceversa
+         * voy colocando, desde la primera fila ultima posicion, luego segunda fila ultima posicion, y pasando luego a primera fila penultima posicion...
+         * de esta forma la pieza va rotando a la derecha
+         */
         let nuevaForma = [];
         
         for(let i = this.forma[0].length - 1 ; i >= 0 ; i--){
@@ -23,44 +28,45 @@ class Pieza{
         }
         this.forma = nuevaForma
     }
-    desgirarPieza() {
-        let nuevaForma = [];
-        for(let i = 0 ; i < this.forma[0].length ;i++){
-            let nuevaFila = [];
-            for(let j = this.forma.length - 1 ; j >= 0 ; j--){
-                nuevaFila.push(this.forma[j][i]);
-            }
-            nuevaForma.push(nuevaFila);
-        }
-        
-        this.forma = nuevaForma
-    }
-    
     validarGiro(tablero, x, y){
-        const yInicial = y;
-        const ancho1 = this.forma[0].length;
-        this.girarPieza();
-        const ancho2 = this.forma[0].length;
-        if(ancho1 < ancho2 && yInicial == 9) y--;
+        /**
+         * En este método me aseguro de que el giro de la pieza sea válido, es decir, que no quede en una posicion fuera del tablero ninguna casilla de la pieza
+         * ni en ningu lugar ya ocupado por otra pieza caida
+         */
+        const yInicial = y;//guardo la posición inicial de la y, por si luego tengo que modificar la original para compensar el cambio de longitud horizontal de la pieza al rotarla
+        const ancho1 = this.forma[0].length;//longitud horizontal forma original
+        const piezaOriginal = this.forma;//Array de la forma original, para retonarlo en caso de que el movimiento sea invalido
+        this.girarPieza();//se rota la pieza
+        const ancho2 = this.forma[0].length;//longitud horizontal forma rotada
+        if(ancho1 < ancho2 && yInicial == 8) y--;//caso que me daba problemas, quedandose la pieza encaja a la derecha al rotar, por eso le resto 1 para meterlo dentro del tablero;
+
         for(let i = 0 ; i < this.forma.length ; i++){
-            for(let j = 0 ; j < this.forma[i].length ; j++){
+            for(let j = 0 ; j < this.forma[i].length ; j++){//recorremos el array de la forma
                 if(this.forma[i][j] === 1){
+                    /**
+                     * si el array de la forma indica que esa casilla tiene parte de la pieza la relacionaremos con el tablero sumando la posicion del tablero(x) a 
+                     * i(posicion inspeccionada dentro de la pieza) y lo mismo en el otro eje(y + j), en el primer caso le sumo 1 porque donde se reflejara el cambio es en el siguiente intervalo
+                     * de actualizar, por tanto no tengo que comprobar el eje vertical en que se encuentra la pieza si no el siguiente. En el caso de buscar si es undefined no se lo añado porque
+                     * si es undefined para esta fila lo sera para la siguiente
+                     * */
                     try{
-                        if(tablero[x + i] == undefined) throw new Error();
+                        /**
+                         * El try catch lo he puesto porque me saltaba un error al darle a la "w" en el tiempo en que caia una pieza hasta que salia la siguiente, funcionaba a la perfeccion sin controlar
+                         * el error, pero no veo porque no hacerlo si me he dado cuenta de que existe
+                         */
+                        if(tablero[i + x] === undefined) throw new Error();
                         if(tablero[i + x + 1][j + y] == 1 || (tablero[i + x][j + y] == undefined)) {
-                            if(ancho1 < ancho2 && yInicial == 9) y++;
-                            this.desgirarPieza();
-                            return false;
+                            //Si entra aqui o al catch el movimiento no seria valido
+                            return piezaOriginal;
                         }
                     }catch(error){
-                        this.desgirarPieza();
-                        return false;
+                        return piezaOriginal;
                     }
                 }
             }
         }
-        this.desgirarPieza();
-        return true;
+        //Si llega aquí el movimiento és válido
+        return this.forma;
     }
 }
 
@@ -68,84 +74,48 @@ const piezas = [
     new Pieza("C", [[1,1,1], [1,0,1]], 0.2, "red"),
     new Pieza("S", [[1,1], [1,1]], 0.2, "blue"),//s de square
     new Pieza("L", [[1,0], [1,0], [1,1]] , 0.1, "green"),
-    new Pieza("-L", [[0,1],[0,1],[1,1]], 0.1, "lightcoral"),
+    new Pieza("-L", [[0,1],[0,1],[1,1]], 0.1, "lightcoral"),//L hacia la derecha
     new Pieza("T", [[1,1,1], [0,1,0], [0,1,0]], 0.2, "yellow"),
     new Pieza("Z", [[1,1,0], [0,1,1]], 0.1, "purple"),
-    new Pieza("-Z", [[0,1,1],[1,1,0]],0.1, "cyan")
+    new Pieza("-Z", [[0,1,1],[1,1,0]],0.1, "cyan")//Z hacia la derecha
 ]
-
+//Conjunto de variables iniciales
 const canvas = document.getElementById("tetris");//Lienzo donde se ejecutara el juego principal
+let juego;//variable que utilizaré para el intervalo
 const lienzo = canvas.getContext("2d");
 const canvasSiguiente = document.getElementById("siguiente");//Lienzo donde mostraremos la siguiente pieza. 90 x 90 porque es lo maximo para mostrar las piezas
 const lienzoSiguiente = canvasSiguiente.getContext("2d");
 const filas = 20;//height canvas = 600, 20 filas /600 px = 30px por fila(tamañoCelda)
 const columnas = 10;//width canvas = 300, 10 columnas / 300 px = 30px por columna(tamañoCelda)
 const tamañoCelda = 30;//tamaño en pixeles de la pieza
-let juego;
 let tablero = inicializarTablero();//el tablero se inicializa con todo 0
 const tableroSiguiente = [[0,0,0], [0,0,0], [0,0,0]];
 let piezaActual = generarPieza();//se elige la siguiente pieza que va a salir
-let siguientePieza = generarPieza();
-siguientePieza.girarPieza()
-siguientePieza.desgirarPieza()
+let siguientePieza = generarPieza();//Dejo generada la siguiente pieza
 let x = -1;//El patron de inicializacion y posiciones que deben avanzar las piezas a cada iteracion
 let y = parseInt(tablero[0].length / 2);//La posicion inicial de las piezas en el eje Y
-let puntuacion = 0;
-let puntuacionDiv = document.getElementById("puntuacion");
-puntuacionDiv.innerText = "Puntos: " + puntuacion;
-lienzo.strokeStyle = "white";
+let puntuacion = 0;//puntuacion inicial
+let proximoCambio = 1000;//Umbral de puntos necesarios para cambiar la velocidad
+let velocidad = 500;//velocidad inicial
+lienzo.strokeStyle = "white";//Color de la cuadrícula
 lienzoSiguiente.strokeStyle = "white";
+let puntuacionDiv = document.getElementById("puntuacion");
+puntuacionDiv.innerText = "Puntos: " + puntuacion;//Para enseñar la puntuacion inicial
+//variables con botones y funcionalidad que he añadido y que ire explicando mas adelante
 const botonPausa = document.getElementById("pausa");
-let velocidad = 500;
 const audio = document.getElementById("audio");
 const botonAudio = document.getElementById("musica");
-juego = setInterval(() => jugar(), velocidad);//Se inicializa el juego
-let proximoCambio = 1000;
 let musicaOn = false;
 const imagenesMusica= [
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--!Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M301.1 34.8C312.6 40 320 51.4 320 64l0 384c0 12.6-7.4 24-18.9 29.2s-25 3.1-34.4-5.3L131.8 352 64 352c-35.3 0-64-28.7-64-64l0-64c0-35.3 28.7-64 64-64l67.8 0L266.7 40.1c9.4-8.4 22.9-10.4 34.4-5.3zM425 167l55 55 55-55c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-55 55 55 55c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-55-55-55 55c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l55-55-55-55c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0z"/></svg>',
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M499.1 6.3c8.1 6 12.9 15.6 12.9 25.7l0 72 0 264c0 44.2-43 80-96 80s-96-35.8-96-80s43-80 96-80c11.2 0 22 1.6 32 4.6L448 147 192 223.8 192 432c0 44.2-43 80-96 80s-96-35.8-96-80s43-80 96-80c11.2 0 22 1.6 32 4.6L128 200l0-72c0-14.1 9.3-26.6 22.8-30.7l320-96c9.7-2.9 20.2-1.1 28.3 5z"/></svg>'
 ];
 
+//Las siguiente 3 lineas son la primera ejecución del juego, nada mas abrirse
+jugar();
 dibujarSiguiente(siguientePieza);
 dibujarTablero();
-function aplicarCss(){
-    const body = document.getElementsByTagName("body")[0];
-    const div = document.getElementById("div");
-    const punt = document.getElementById("puntuacion");
-    const musica = document.getElementById("musica");
-    const svg = document.getElementsByTagName("svg")[0];
-    body.style.backgroundImage = "url(prado-1.webp)";
-    body.style.backgroundSize = "cover";
-    body.style.backgroundPosition = "center";
-    body.style.backgroundRepeat = "no-repeat";
-    punt.style.backgroundColor = "black";
-    punt.style.color = "white";
-    punt.style.textAlign = "center";
-    div.style.display = "flex";
-    div.style.flexDirection = "column";
-    div.style.width = "100%";
-    div.style.height = "9vh";
-    div.style.alignItems = "center";
-    div.style.gap = "5%";
-    musica.style.width = "3%";
-    svg.style.width = "100%";
-    svg.style.height = "auto";
-}
-function mostrarInstrucciones(){
-    if(botonPausa.innerText != "Reiniciar"){
-        if(botonPausa.innerText == "Pausa"){
-            clearInterval(juego);
-            alert("Instrucciones:\nI: instrucciones\nP: pausar/reanudar/reiniciar\nM: parar/reanudar música\nW: rotar la pieza\nS: avance rápido\nA: mover a la izquierda\nD: mover a la derecha")
-            juego = setInterval(() => jugar(), velocidad);
-        }else{
-            alert("Instrucciones:\nI: instrucciones\nP: pausar/reanudar/reiniciar\nM: parar/reanudar música\nW: rotar la pieza\nS: avance rápido\nA: mover a la izquierda\nD: mover a la derecha")            
-        }
-    }else{
-        alert("Instrucciones:\nI: instrucciones\nP: pausar/reanudar/reiniciar\nM: parar/reanudar música\nW: rotar la pieza\nS: avance rápido\nA: mover a la izquierda\nD: mover a la derecha")
-    }
-    
-}
+
 
 function generarPieza(){
     //Elige cual sera la siguiente pieza que sale, tiene en cuenta la probabilidad de que salga cada pieza
@@ -167,6 +137,7 @@ function generarPieza(){
     }
 }
 function dibujarSiguiente(pieza){
+    /**dibuja la pieza en el canvas siguiente, primero lo limpia y luego dibuja la nueva pieza */
     limpiarSiguiente()
     for(let i = 0 ; i < pieza.forma.length ; i++){
         for(let j = 0 ; j < pieza.forma[0].length ; j++){
@@ -179,6 +150,7 @@ function dibujarSiguiente(pieza){
     }
 }
 function limpiarSiguiente(){
+    //Limpia el canvas de la siguiente pieza
     for(let i = 0 ; i < tableroSiguiente.length ; i++){
         for(let j = 0 ; j < tableroSiguiente[i].length ; j++){
             lienzoSiguiente.fillStyle = "black";
@@ -188,80 +160,8 @@ function limpiarSiguiente(){
     }
 }
 function jugar(){
-    dibujarTablero();
-    actualizar();
-}
-function actualizar(){
-    x++;
-    if(finalizar(piezaActual, x, y)){
-        botonPausa.innerText = "Reiniciar";
-        puntuacionDiv.innerText = `Se acabó la partida!\n Conseguiste ${puntuacion} puntos!`;
-        puntuacionDiv.style.backgroundColor = "yellow";
-        puntuacionDiv.style.color = "black";
-        tablero = tableroFinal();
-        dibujarTablero()
-        clearInterval(juego);
-        return - 1; //De esta forma evito que se dibuje una nueva pieza en el momento en que termina la partida
-    }
-    if(y + piezaActual.forma[0].length > 19){
-        y--;
-    }
-    dibujoPieza(piezaActual, x, y -(parseInt(piezaActual.forma.length / 2)));
-    
-    if(chequearColisiones(piezaActual, x, y - 1)){
-        insertarPieza(piezaActual, x, y)
-        x = - 1;
-        piezaActual = siguientePieza;
-        siguientePieza = generarPieza();
-        dibujarSiguiente(siguientePieza)
-        if(piezaActual.forma[0].length === 3 && y === 9) y--;
-    }
-    
-    
-}
-function insertarPieza(pieza, x, y){
-    for (let i = 0; i < pieza.forma.length; i++) {
-        for (let j = 0; j < pieza.forma[i].length; j++) {
+    juego = setInterval(() => actualizar(), velocidad);//Se inicializa o reanuda el juego
 
-            if (pieza.forma[i][j] == 1) {
-                tablero[x + i][y + j - 1] = 1;
-            }
-        }
-    }
-    eliminarLinea()
-    
-}
-function eliminarLinea(){
-    let lineasEliminadas = 0;
-    for(let i = 0 ; i < tablero.length ; i++){
-        for(let j = 0 ; j < tablero[i].length ; j++){
-            if(tablero[i][j] != 1){
-                break;
-            }
-            if(j >= tablero[i].length - 1){
-                tablero.splice(i, 1)
-                i--;
-                lineasEliminadas++;
-                nuevaFila = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-                tablero.unshift(nuevaFila);
-                
-            }
-        }
-    }
-    if(lineasEliminadas > 0){
-        puntuacion += lineasEliminadas * 350;
-        puntuacionDiv.innerText = "Puntos: " + puntuacion;
-    }
-    if(puntuacion >= proximoCambio){
-        let diferencia = parseInt((puntuacion - proximoCambio) / 1000) + 1;
-        while(diferencia > 0){
-            velocidad -= 20;
-            diferencia--;
-        }
-        proximoCambio += 1000;
-        clearInterval(juego)
-        juego = setInterval(() => jugar(), velocidad)
-    }
 }
 function dibujarTablero(){
     //reinicia el tablero poniendo todo lo que no sean fichas anteriormente ya caidas como espacios vacios, para permitir dibujar el siguiente intervalo sin que se acumule con el anterior
@@ -282,7 +182,7 @@ function dibujarTablero(){
 }
 
 function dibujoPieza(pieza, x, y){
-    //dibuja la situacion en la presente iteracion del intervalo
+    //dibuja la situacion de la pieza en la presente iteracion del intervalo
     for(let i = pieza.forma.length - 1 ; i >= 0 ; i--){
         if(i < 0) continue;
         for(let j = 0 ; j < pieza.forma[i].length ; j++){
@@ -299,6 +199,7 @@ function chequearColisiones(pieza, x, y){
     for(let i = 0 ; i < pieza.forma.length;i++){
        
         for(let j = 0 ; j < pieza.forma[i].length ; j++){
+            //usando la misma logica de x + i, y + j usada anteriormente, detectamos si la posicion en que se encuentra la pieza es 1 en el tablero o undefined
             try{
                 if(pieza.forma[i][j] == 1){
                     if(tablero[x + i + 1] === undefined) throw new Error(); 
@@ -335,6 +236,88 @@ function chequearColisionesLaterales(pieza, x, y, lado){
     }
     return false;
 }
+function eliminarLinea(){
+    //Comprobamos si alguna linea tiene todos sus elementos en 1, y en ese caso eliminaos la linea y añadimos otra de 0's con un unshift
+    let lineasEliminadas = 0;
+    for(let i = 0 ; i < tablero.length ; i++){
+        for(let j = 0 ; j < tablero[i].length ; j++){
+            if(tablero[i][j] != 1){
+                break;
+            }
+            if(j >= tablero[i].length - 1){
+                tablero.splice(i, 1)
+                i--;
+                lineasEliminadas++;
+                nuevaFila = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+                tablero.unshift(nuevaFila);
+                
+            }
+        }
+    }
+    //Sumamos una cantidad de puntos por cada linea eliminada
+    if(lineasEliminadas > 0){
+        puntuacion += lineasEliminadas * 350;
+        puntuacionDiv.innerText = "Puntos: " + puntuacion;
+    }
+    //En el proximo condicional comprobamos la cantidad de puntos para hacer que cada 1000 puntos la velocidad se reduzca en 20
+    if(puntuacion >= proximoCambio){
+        let diferencia = 0;
+        while(puntuacion >= proximoCambio){
+            proximoCambio *= 2;//Aumentamos el proximoCambio para que cada vez sea mas dificil llegar, lo hacemos en un while por si haces muchas lineas de golpe, es necesaria que vaya incrementando en consonancia y no todos los aumentos sin cambiar el proximoCambio
+            diferencia++;
+        }
+        while(diferencia > 0){
+            velocidad /= 1.05;
+            diferencia--;
+        }
+        clearInterval(juego)
+        jugar();
+    }
+}
+function insertarPieza(pieza, x, y){
+    //inserta la pieza en el tablero convirtiéndola en 1 en el tablero
+    for (let i = 0; i < pieza.forma.length; i++) {
+        for (let j = 0; j < pieza.forma[i].length; j++) {
+            if (pieza.forma[i][j] == 1) {
+                tablero[x + i][y + j - 1] = 1;
+            }
+        }
+    }
+    eliminarLinea()
+}
+
+
+function actualizar(){
+    //Bucle principal del juego que se ejecuta cada x tiempo, en funcion de la velocidad actual
+    dibujarTablero();//Dibujamos el tablero 
+    x++;
+    if(finalizar(piezaActual, x, y)){
+        botonPausa.innerText = "Reiniciar";
+        puntuacionDiv.innerText = `Se acabó la partida!\n Conseguiste ${puntuacion} puntos!`;
+        puntuacionDiv.style.backgroundColor = "yellow";
+        puntuacionDiv.style.color = "black";
+        tablero = tableroFinal();
+        dibujarTablero()
+        clearInterval(juego);
+        return - 1; //De esta forma evito que se dibuje una nueva pieza en el momento en que termina la partida
+    }
+    if(y + piezaActual.forma[0].length > 19){
+        y--;
+    }
+    dibujoPieza(piezaActual, x, y -(parseInt(piezaActual.forma.length / 2)));
+    
+    if(chequearColisiones(piezaActual, x, y - 1)){
+        insertarPieza(piezaActual, x, y)
+        x = - 1;
+        piezaActual = siguientePieza;
+        siguientePieza = generarPieza();
+        dibujarSiguiente(siguientePieza)
+        if(piezaActual.forma[0].length === 3 && y === 9) y--;
+    }
+    
+    
+}
+
 
 function inicializarTablero(){
     //devuelve un array con las dimensiones que queremos lleno de 0's
@@ -409,15 +392,52 @@ function pausarReiniciar(){
         puntuacion = 0;
         velocidad = 500;
         proximoCambio = 1000;
-        juego = setInterval(() => jugar(), velocidad)
+        jugar();
         botonPausa.innerText = "Pausa";
         puntuacionDiv.innerText = "Puntuación: " + puntuacion;
         puntuacionDiv.style.backgroundColor = "black";
         puntuacionDiv.style.color = "white";
     }else{
         botonPausa.innerText = "Pausa";
-        juego = setInterval(() => jugar(), velocidad)
+        jugar();
     }
+}
+function aplicarCss(){
+    const body = document.getElementsByTagName("body")[0];
+    const div = document.getElementById("div");
+    const punt = document.getElementById("puntuacion");
+    const musica = document.getElementById("musica");
+    const svg = document.getElementsByTagName("svg")[0];
+    body.style.backgroundImage = "url(prado-1.webp)";
+    body.style.backgroundSize = "cover";
+    body.style.backgroundPosition = "center";
+    body.style.backgroundRepeat = "no-repeat";
+    punt.style.backgroundColor = "black";
+    punt.style.color = "white";
+    punt.style.textAlign = "center";
+    div.style.display = "flex";
+    div.style.flexDirection = "column";
+    div.style.width = "100%";
+    div.style.height = "9vh";
+    div.style.alignItems = "center";
+    div.style.gap = "5%";
+    musica.style.width = "3%";
+    svg.style.width = "100%";
+    svg.style.height = "auto";
+}
+function mostrarInstrucciones(){
+    if(botonPausa.innerText != "Reiniciar"){
+        if(botonPausa.innerText == "Pausa"){
+            clearInterval(juego);
+            alert("Instrucciones:\nI: instrucciones\nP: pausar/reanudar/reiniciar\nM: parar/reanudar música\nW: rotar la pieza\nS: avance rápido\nA: mover a la izquierda\nD: mover a la derecha")
+            jugar();
+        }else{
+            alert("Instrucciones:\nI: instrucciones\nP: pausar/reanudar/reiniciar\nM: parar/reanudar música\nW: rotar la pieza\nS: avance rápido\nA: mover a la izquierda\nD: mover a la derecha")            
+        }
+    }else{
+        alert("Instrucciones:\nI: instrucciones\nP: pausar/reanudar/reiniciar\nM: parar/reanudar música\nW: rotar la pieza\nS: avance rápido\nA: mover a la izquierda\nD: mover a la derecha")
+    }
+    
 }
 document.addEventListener("keypress", (event) => {
     if((event.key == "a" || event.key == "A") 
@@ -439,11 +459,11 @@ document.addEventListener("keyup", (event) =>{
     if(event.key == "m" || event.key == "M") pararMusica()
     if(event.key == "p" || event.key == "P") pausarReiniciar();
     if((event.key == "w" || event.key == "W" ) && 
-        botonPausa.innerText == "Pausa" && 
-        piezaActual.validarGiro(tablero, x, y)){
+        botonPausa.innerText == "Pausa"){
         
-        piezaActual.girarPieza();
+        piezaActual.forma = piezaActual.validarGiro(tablero, x, y - 1)
         if(piezaActual.forma[0].length === 3 && y === 9) y--;
+
     }
 })
 addEventListener("load", () => aplicarCss())//El evento load no necesita que le pongas document porque sucede directamente desde el objeto window, el cual se aplica por defecto, seria correcto tambien hacer "window.addEventListener()" pero no es necesario
