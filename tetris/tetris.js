@@ -106,6 +106,7 @@ const botonPausa = document.getElementById("pausa");
 const audio = document.getElementById("audio");
 const botonAudio = document.getElementById("musica");
 let musicaOn = false;
+//Array con las 2 imagenes que usaré para el boton de la música 
 const imagenesMusica= [
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--!Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M301.1 34.8C312.6 40 320 51.4 320 64l0 384c0 12.6-7.4 24-18.9 29.2s-25 3.1-34.4-5.3L131.8 352 64 352c-35.3 0-64-28.7-64-64l0-64c0-35.3 28.7-64 64-64l67.8 0L266.7 40.1c9.4-8.4 22.9-10.4 34.4-5.3zM425 167l55 55 55-55c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-55 55 55 55c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-55-55-55 55c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l55-55-55-55c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0z"/></svg>',
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M499.1 6.3c8.1 6 12.9 15.6 12.9 25.7l0 72 0 264c0 44.2-43 80-96 80s-96-35.8-96-80s43-80 96-80c11.2 0 22 1.6 32 4.6L448 147 192 223.8 192 432c0 44.2-43 80-96 80s-96-35.8-96-80s43-80 96-80c11.2 0 22 1.6 32 4.6L128 200l0-72c0-14.1 9.3-26.6 22.8-30.7l320-96c9.7-2.9 20.2-1.1 28.3 5z"/></svg>'
@@ -161,7 +162,6 @@ function limpiarSiguiente(){
 }
 function jugar(){
     juego = setInterval(() => actualizar(), velocidad);//Se inicializa o reanuda el juego
-
 }
 function dibujarTablero(){
     //reinicia el tablero poniendo todo lo que no sean fichas anteriormente ya caidas como espacios vacios, para permitir dibujar el siguiente intervalo sin que se acumule con el anterior
@@ -194,7 +194,6 @@ function dibujoPieza(pieza, x, y){
         }
     }
 }
-
 function chequearColisiones(pieza, x, y){
     for(let i = 0 ; i < pieza.forma.length;i++){
        
@@ -291,31 +290,29 @@ function actualizar(){
     //Bucle principal del juego que se ejecuta cada x tiempo, en funcion de la velocidad actual
     dibujarTablero();//Dibujamos el tablero 
     x++;
-    if(finalizar(piezaActual, x, y)){
-        botonPausa.innerText = "Reiniciar";
-        puntuacionDiv.innerText = `Se acabó la partida!\n Conseguiste ${puntuacion} puntos!`;
+    if(finalizar(piezaActual, x, y)){//Si se cumplen las condiciones para finalizar la partida
+        botonPausa.innerText = "Reiniciar";//El boton de pausa servirá para reiniciar
+        puntuacionDiv.innerText = `Se acabó la partida!\n Conseguiste ${puntuacion} puntos!`;//El antiguo mensaje con los puntos ahora nos dirá la puntuación obtenida
         puntuacionDiv.style.backgroundColor = "yellow";
         puntuacionDiv.style.color = "black";
-        tablero = tableroFinal();
+        tablero = tableroFinal();//El tablero se actualizará para mostrar el mensaje de game over
         dibujarTablero()
-        clearInterval(juego);
+        clearInterval(juego);//Se parara el intervalo
         return - 1; //De esta forma evito que se dibuje una nueva pieza en el momento en que termina la partida
     }
     if(y + piezaActual.forma[0].length > 19){
-        y--;
+        y--;//Evitamos que la pieza caiga por debajo del canvas
     }
-    dibujoPieza(piezaActual, x, y -(parseInt(piezaActual.forma.length / 2)));
+    dibujoPieza(piezaActual, x, y -(parseInt(piezaActual.forma.length / 2)));//dibujamos la pieza en el canvas
     
-    if(chequearColisiones(piezaActual, x, y - 1)){
-        insertarPieza(piezaActual, x, y)
-        x = - 1;
-        piezaActual = siguientePieza;
-        siguientePieza = generarPieza();
-        dibujarSiguiente(siguientePieza)
-        if(piezaActual.forma[0].length === 3 && y === 9) y--;
-    }
-    
-    
+    if(chequearColisiones(piezaActual, x, y - 1)){//Comprobamos si hay colision
+        insertarPieza(piezaActual, x, y)//En caso de colision insertamos la pieza
+        x = -1;//Reiniciamos el valor de x para la nueva pieza
+        piezaActual = siguientePieza;//Renovamos la pieza a partir de la pieza que habiamos generado anteriormente para que fuera la siguiente
+        siguientePieza = generarPieza();//Generamos una nueva pieza
+        dibujarSiguiente(siguientePieza)//Redibujamos la siguiente pieza
+        if(piezaActual.forma[0].length === 3 && y === 9) y--;//Corregimos un pequeño error al salir una pieza de 3 de longitud horizontal despues de caer una de longitud horizontal 2
+    }    
 }
 
 
@@ -333,6 +330,7 @@ function inicializarTablero(){
 }
 
 function finalizar(pieza, x, y){
+    //Comprobamos las condiciones para finalizar si hay una casilla de la primera fila que sea 1 y hay una pieza encima de ella
     for(let i = 0 ; i < pieza.forma.length ; i++){
         for(let j = 0 ; j < pieza.forma[0].length ; j++){
             if(x == 0 && pieza.forma[i][j] == 1 && tablero[i + x][j + y] == 1){
@@ -342,18 +340,8 @@ function finalizar(pieza, x, y){
     }
     return false;
 }
-function pararMusica(){
-    if(musicaOn){
-        audio.pause();
-        botonAudio.innerHTML = imagenesMusica[1];
-        musicaOn = !musicaOn;
-    }else{
-        audio.play();
-        botonAudio.innerHTML = imagenesMusica[0];
-        musicaOn = !musicaOn;
-    }
-}
 function tableroFinal(){
+    //Este es el tablero que pone GAME OVER que se muestra cuando se acaba el juego
     return [
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -378,12 +366,19 @@ function tableroFinal(){
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     ];
 }
+//Funcionalidades adicionales
 function pausarReiniciar(){
-    if(botonPausa.innerText == "Pausa"){
+    /**
+     * En esta función tenemos la lógica del boton de pausa, que tiene 3 estados
+     * Pausar: cuando el juego esta en ejecución
+     * Reanudar: cuando el juego esta pausado
+     * Reiniciar: cuando el juego esta terminado
+     */
+    if(botonPausa.innerText == "Pausa"){//Pausar
         botonPausa.innerText = "Reanudar";
         clearInterval(juego);
-    }else if(botonPausa.innerText == "Reiniciar"){
-        
+    }else if(botonPausa.innerText == "Reiniciar"){//Reiniciar
+        //En esta función lo que haga es llevar todas las variables a los valores de inicio y volver a ejecutar el juego
         tablero = inicializarTablero();
         piezaActual = generarPieza();
         siguientePieza = generarPieza();
@@ -398,11 +393,38 @@ function pausarReiniciar(){
         puntuacionDiv.style.backgroundColor = "black";
         puntuacionDiv.style.color = "white";
     }else{
-        botonPausa.innerText = "Pausa";
+        botonPausa.innerText = "Pausa";//Reanudar
         jugar();
     }
 }
+function pararMusica(){
+    /**
+     * Decidí poner un audio con la música del tetris, pero al poner autoplay
+     * hay que permitir que el navegador lo reproduzca, podria añadir en la funcion aplicar css
+     * algo asi como:
+     * audio.play();
+     * botonAudio.innerHTML = imagenesMusica[0];
+     * musicaOn = !musicaOn;
+     * de esta forma se podría iniciar la música nada mas iniciar la página, pero
+     * he decidido no hacerlo para que no sea tan invasivo. Me he encontrado
+     * con ciertos problemas si los auriculares no estaban conectados de antes
+     * Reiniciando el navegador funciona
+     */
+    if(musicaOn){
+        audio.pause();
+        botonAudio.innerHTML = imagenesMusica[1];
+        musicaOn = !musicaOn;
+    }else{
+        audio.play();
+        botonAudio.innerHTML = imagenesMusica[0];
+        musicaOn = !musicaOn;
+    }
+}
 function aplicarCss(){
+    /*
+    * Como esta asignatura va de programación y no de css
+    * todos los estilos adicionales he decido aplicarles con un evento onload
+    */
     const body = document.getElementsByTagName("body")[0];
     const div = document.getElementById("div");
     const punt = document.getElementById("puntuacion");
@@ -426,6 +448,8 @@ function aplicarCss(){
     svg.style.height = "auto";
 }
 function mostrarInstrucciones(){
+    //Muestra en un alert todos los atajos de teclado disponibles
+    //Me aseguro de que se pausa si el juego esta en ejecuciónx
     if(botonPausa.innerText != "Reiniciar"){
         if(botonPausa.innerText == "Pausa"){
             clearInterval(juego);
@@ -440,6 +464,13 @@ function mostrarInstrucciones(){
     
 }
 document.addEventListener("keypress", (event) => {
+    /**
+     * Los eventos keypress se continuan sucediendo constantemente si se mantiene apretada la tecla,
+     * por eso los movimientos de la pieza excepto la rotación se ejecutan con este evento.
+     * Además, me asegura que el botón de pausa tengo el innerText "Pausa", ya que solamente cuando tiene
+     * este estado la partida esta en marcha, de esta forma evito que se mueva la pieza(o rote, como se
+     * verá más adelante) mientras la partida esta pausada.
+     */
     if((event.key == "a" || event.key == "A") 
         &&!chequearColisionesLaterales(piezaActual, x, y - 1, false) && botonPausa.innerText == "Pausa"){
         y--;
@@ -455,18 +486,22 @@ document.addEventListener("keypress", (event) => {
     }
 })
 document.addEventListener("keyup", (event) =>{
+    /**
+     * Los eventos keyup se aplicaran solamente al levantar la tecla al apretarla
+     * Son eventos que no quiero que se sigan sucediendo al mantener la tecla apretada,
+     * si no que se suceda solamente una vez
+     */
     if(event.key == "i" || event.key == "I") mostrarInstrucciones();
     if(event.key == "m" || event.key == "M") pararMusica()
     if(event.key == "p" || event.key == "P") pausarReiniciar();
     if((event.key == "w" || event.key == "W" ) && 
         botonPausa.innerText == "Pausa"){
-        
-        piezaActual.forma = piezaActual.validarGiro(tablero, x, y - 1)
+        piezaActual.forma = piezaActual.validarGiro(tablero, x, y - 1);
         if(piezaActual.forma[0].length === 3 && y === 9) y--;
 
     }
 })
 addEventListener("load", () => aplicarCss())//El evento load no necesita que le pongas document porque sucede directamente desde el objeto window, el cual se aplica por defecto, seria correcto tambien hacer "window.addEventListener()" pero no es necesario
-botonAudio.addEventListener('click', () => pararMusica())
-botonPausa.addEventListener('click', () => pausarReiniciar())
-document.getElementById("instrucciones").addEventListener('click', () => mostrarInstrucciones());
+botonAudio.addEventListener('click', () => pararMusica());//eventos para parar o reanudar la musica
+botonPausa.addEventListener('click', () => pausarReiniciar());//evento para pausar, reanudar, reiniciar
+document.getElementById("instrucciones").addEventListener('click', () => mostrarInstrucciones());//evento para mostrar instrucciones
