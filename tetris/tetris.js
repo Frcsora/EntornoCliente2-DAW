@@ -113,7 +113,6 @@ const imagenesMusica= [
 ];
 
 //Las siguiente 3 lineas son la primera ejecución del juego, nada mas abrirse
-jugar();
 dibujarSiguiente(siguientePieza);
 dibujarTablero();
 
@@ -374,7 +373,10 @@ function pausarReiniciar(){
      * Reanudar: cuando el juego esta pausado
      * Reiniciar: cuando el juego esta terminado
      */
-    if(botonPausa.innerText == "Pausa"){//Pausar
+    if(botonPausa.innerText=="Iniciar"){
+        botonPausa.innerText = "Pausa";
+        jugar();
+    }else if(botonPausa.innerText == "Pausa"){//Pausar
         botonPausa.innerText = "Reanudar";
         clearInterval(juego);
     }else if(botonPausa.innerText == "Reiniciar"){//Reiniciar
