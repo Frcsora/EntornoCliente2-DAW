@@ -1,5 +1,5 @@
 class Pieza{
-    //Atributos requeridos por el ejercicios
+    //Atributos requeridos por el ejercicio
     /*Decir que con estos atributos, al rotar una pieza, esta se quedara rotada para la próxima vez que aparezca. Se podría evitar con un atributo "formaOriginal" y
      haciendo que la forma vuelva al original cada vez, pero me parece más divertido que la siguiente vez que aparezca la misma pieza sea en la posición que se quedó la última vez
     */
@@ -52,7 +52,7 @@ class Pieza{
                     try{
                         /**
                          * El try catch lo he puesto porque me saltaba un error al darle a la "w" en el tiempo en que caia una pieza hasta que salia la siguiente, funcionaba a la perfeccion sin controlar
-                         * el error, pero no veo porque no hacerlo si me he dado cuenta de que existe
+                         * el error, pero no veo porque no hacerlo si me he dado cuenta de que se produce el error
                          */
                         if(tablero[i + x] === undefined) throw new Error();
                         if(tablero[i + x + 1][j + y] == 1 || (tablero[i + x][j + y] == undefined)) {
@@ -92,8 +92,8 @@ let tablero = inicializarTablero();//el tablero se inicializa con todo 0
 const tableroSiguiente = [[0,0,0], [0,0,0], [0,0,0]];
 let piezaActual = generarPieza();//se elige la siguiente pieza que va a salir
 let siguientePieza = generarPieza();//Dejo generada la siguiente pieza
-let x = -1;//El patron de inicializacion y posiciones que deben avanzar las piezas a cada iteracion
-let y = parseInt(tablero[0].length / 2);//La posicion inicial de las piezas en el eje Y
+let x = -1;//Inicializacion variable vertical
+let y = parseInt(tablero[0].length / 2);//Inicializacion variable horizontal
 let puntuacion = 0;//puntuacion inicial
 let proximoCambio = 1000;//Umbral de puntos necesarios para cambiar la velocidad
 let velocidad = 500;//velocidad inicial
@@ -113,9 +113,8 @@ const imagenesMusica= [
 ];
 
 //Las siguiente 3 lineas son la primera ejecución del juego, nada mas abrirse
-dibujarSiguiente(siguientePieza);
 dibujarTablero();
-
+limpiarSiguiente();
 
 function generarPieza(){
     //Elige cual sera la siguiente pieza que sale, tiene en cuenta la probabilidad de que salga cada pieza
@@ -138,13 +137,13 @@ function generarPieza(){
 }
 function dibujarSiguiente(pieza){
     /**dibuja la pieza en el canvas siguiente, primero lo limpia y luego dibuja la nueva pieza */
-    limpiarSiguiente()
+    limpiarSiguiente();
     for(let i = 0 ; i < pieza.forma.length ; i++){
         for(let j = 0 ; j < pieza.forma[0].length ; j++){
             if(pieza.forma[i][j] == 1){
                 lienzoSiguiente.fillStyle = pieza.color;
-                lienzoSiguiente.fillRect(j * tamañoCelda, i * tamañoCelda ,tamañoCelda, tamañoCelda)
-                lienzoSiguiente.strokeRect(j * tamañoCelda, i * tamañoCelda ,tamañoCelda, tamañoCelda)
+                lienzoSiguiente.fillRect(j * tamañoCelda, i * tamañoCelda ,tamañoCelda, tamañoCelda);
+                lienzoSiguiente.strokeRect(j * tamañoCelda, i * tamañoCelda ,tamañoCelda, tamañoCelda);
             }
         }
     }
@@ -154,8 +153,8 @@ function limpiarSiguiente(){
     for(let i = 0 ; i < tableroSiguiente.length ; i++){
         for(let j = 0 ; j < tableroSiguiente[i].length ; j++){
             lienzoSiguiente.fillStyle = "black";
-            lienzoSiguiente.fillRect(j * tamañoCelda,i * tamañoCelda,tamañoCelda,tamañoCelda)
-            lienzoSiguiente.strokeRect(j * tamañoCelda, i * tamañoCelda ,tamañoCelda, tamañoCelda)
+            lienzoSiguiente.fillRect(j * tamañoCelda,i * tamañoCelda,tamañoCelda,tamañoCelda);
+            lienzoSiguiente.strokeRect(j * tamañoCelda, i * tamañoCelda ,tamañoCelda, tamañoCelda);
         }
     }
 }
@@ -297,6 +296,7 @@ function actualizar(){
         tablero = tableroFinal();//El tablero se actualizará para mostrar el mensaje de game over
         dibujarTablero()
         clearInterval(juego);//Se parara el intervalo
+        limpiarSiguiente();
         return - 1; //De esta forma evito que se dibuje una nueva pieza en el momento en que termina la partida
     }
     if(y + piezaActual.forma[0].length > 19){
@@ -375,6 +375,7 @@ function pausarReiniciar(){
      */
     if(botonPausa.innerText=="Iniciar"){
         botonPausa.innerText = "Pausa";
+        dibujarSiguiente(siguientePieza);
         jugar();
     }else if(botonPausa.innerText == "Pausa"){//Pausar
         botonPausa.innerText = "Reanudar";
@@ -389,6 +390,7 @@ function pausarReiniciar(){
         puntuacion = 0;
         velocidad = 500;
         proximoCambio = 1000;
+        dibujarSiguiente(siguientePieza);
         jugar();
         botonPausa.innerText = "Pausa";
         puntuacionDiv.innerText = "Puntuación: " + puntuacion;
@@ -454,14 +456,14 @@ function mostrarInstrucciones(){
     //Me aseguro de que se pausa si el juego esta en ejecuciónx
     if(botonPausa.innerText != "Reiniciar"){
         if(botonPausa.innerText == "Pausa"){
-            clearInterval(juego);
-            alert("Instrucciones:\nI: instrucciones\nP: pausar/reanudar/reiniciar\nM: parar/reanudar música\nW: rotar la pieza\nS: avance rápido\nA: mover a la izquierda\nD: mover a la derecha")
+            clearInterval(juego);//En este caso el juego estaría en marcha asi que lo paro mientras están abiertas las instrucciones
+            alert("Instrucciones:\nI: instrucciones\nP: pausar/reanudar/reiniciar\nM: parar/reanudar música\nW: rotar la pieza\nS: avance rápido\nA: mover a la izquierda\nD: mover a la derecha");
             jugar();
         }else{
-            alert("Instrucciones:\nI: instrucciones\nP: pausar/reanudar/reiniciar\nM: parar/reanudar música\nW: rotar la pieza\nS: avance rápido\nA: mover a la izquierda\nD: mover a la derecha")            
+            alert("Instrucciones:\nI: instrucciones\nP: pausar/reanudar/reiniciar\nM: parar/reanudar música\nW: rotar la pieza\nS: avance rápido\nA: mover a la izquierda\nD: mover a la derecha");            
         }
     }else{
-        alert("Instrucciones:\nI: instrucciones\nP: pausar/reanudar/reiniciar\nM: parar/reanudar música\nW: rotar la pieza\nS: avance rápido\nA: mover a la izquierda\nD: mover a la derecha")
+        alert("Instrucciones:\nI: instrucciones\nP: pausar/reanudar/reiniciar\nM: parar/reanudar música\nW: rotar la pieza\nS: avance rápido\nA: mover a la izquierda\nD: mover a la derecha");
     }
     
 }
