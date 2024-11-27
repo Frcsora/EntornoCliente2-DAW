@@ -488,6 +488,8 @@ document.addEventListener("keypress", (event) => {
             x++;    
         }        
     }
+    dibujarTablero();
+    dibujoPieza(piezaActual, x, y -(parseInt(piezaActual.forma.length / 2)));
 })
 document.addEventListener("keyup", (event) =>{
     /**
@@ -502,7 +504,8 @@ document.addEventListener("keyup", (event) =>{
         botonPausa.innerText == "Pausa"){
         piezaActual.forma = piezaActual.validarGiro(tablero, x, y - 1);
         if(piezaActual.forma[0].length === 3 && y === 9) y--;
-
+        dibujarTablero();
+        dibujoPieza(piezaActual, x, y -(parseInt(piezaActual.forma.length / 2)));
     }
 })
 addEventListener("load", () => aplicarCss())//El evento load no necesita que le pongas document porque sucede directamente desde el objeto window, el cual se aplica por defecto, seria correcto tambien hacer "window.addEventListener()" pero no es necesario
