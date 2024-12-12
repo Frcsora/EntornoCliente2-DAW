@@ -1,0 +1,52 @@
+body {
+  width: 100vw;
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-image: url(images.webp);
+  background-position: center;
+  background-size: cover;
+}
+
+.tablero {
+  border: 1px solid black;
+  min-width: 640px;
+  min-height: 640px;
+  margin: 0 auto;
+}
+
+.filas {
+  width: 100%;
+  min-width: 80px;
+  height: 10vh;
+  min-height: 80px;
+  display: flex;
+}
+.filas .casillas {
+  width: 10vh;
+  min-width: 80px;
+  height: 10vh;
+  min-height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.filas .casillas svg {
+  width: 75%;
+  height: 75%;
+}
+.filas .casilla-blanca {
+  background-color: beige;
+}
+.filas .casilla-negra {
+  background-color: brown;
+}
+.filas .casillas.active {
+  box-shadow: inset 0 0 0 5px blue;
+}
+
+.oculto {
+  display: none;
+}/*# sourceMappingURL=styles.css.map */
