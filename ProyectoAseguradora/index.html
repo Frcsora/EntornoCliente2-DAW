@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es-ES">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1 class="h1">Seguros DAW</h1>
+    </header>
+    <form id="form">
+        <h1>Información personal</h1>
+        <div class="container">
+            <fieldset>
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" placeholder="Nombre"><br>
+            </fieldset>
+            <fieldset>
+                <label for="apellido">Apellidos:</label>
+                <input type="text" id="apellido" placeholder="Apellidos"><br>
+            </fieldset>
+            <fieldset>
+                <label for="dni">DNI:</label>
+                <input type="text" id="dni" placeholder="DNI"><br>
+            </fieldset>
+            <fieldset>
+                <label for="genero">Género:</label>
+                <select id="genero">
+                    <option value="">Elige una opción</option>
+                    <option value="otro">Otro</option>
+                    <option value="mujer">Mujer</option>
+                    <option value="hombre">Hombre</option>
+                </select>
+            </fieldset>
+        </div>
+        <div class="container">
+            <fieldset>
+                <label for="correo">Correo:</label>
+                <input type="text" id="correo" placeholder="Correo electrónico"><br> 
+            </fieldset>   
+            <fieldset>
+                <label for="telefono">Teléfono móbil:</label>
+                <input type="text" id="telefono" placeholder="Nº teléfono"><br>
+            </fieldset>
+            <fieldset>
+                <label for="cp">Código Postal:</label>
+                <input type="text" id="cp" placeholder="Codigo Postal"><br>
+            </fieldset>
+        </div>
+        <div class="container container3">
+            <fieldset>
+                <label for="ccaa">CCAA:</label>
+                <select id="ccaa">
+                    <option value="">Elige una opción</option>
+                </select><br>
+            </fieldset>
+            <fieldset id="ccaaprovincia" class="invisible">
+                <label for="provincias">Provincia:</label>
+                <select id="provincias">
+                    <option value="">Elige una opción:</option>
+                </select><br>
+            </fieldset>
+            <fieldset>
+                <label for="nacimiento">Fecha de nacimiento:</label>
+                <input type="date" position="dd-mm-aa" id="nacimiento">
+            </fieldset>
+            <fieldset>
+                <label for="fechaPermiso">Fecha permiso conducir:</label>
+                <input type="date" id="fechaPermiso">
+            </fieldset>
+        </div>
+        <h1>Información del vehículo</h1>
+        <div class="container container3">
+            <fieldset>
+                <label for="marca">Marca:</label>
+                <select id="marca">
+                    <option value="">Elige una opción</option>
+                </select>
+            </fieldset>
+            <fieldset id="modelomarca" class="invisible">
+                <label for="modelo">Modelo:</label>
+                <select id="modelo">
+                    <option value="">Elige una opción</option>
+                </select>
+            </fieldset>
+            <fieldset>
+                <label for="tipo">Tipo coche:</label>
+                <select id="tipo">
+                    <option value="">Elige una opción</option>
+                </select>
+            </fieldset>
+        </div>
+        <div class="container">
+            <fieldset>
+                <label for="seguro">Tipo seguro:</label>
+                <select id="seguro">
+                    <option value="">Elige una opción</option>
+                </select>
+            </fieldset>
+            <fieldset>
+                <label for="fechaMatricula">Fecha matriculación:</label>
+                <input type="date" id="fechaMatricula">
+            </fieldset>
+            <fieldset>
+                <label for="matricula">Matrícula:</label>
+                <input type="text" id="matricula" placeholder="Matrícula del vehículo">
+            </fieldset>
+        </div>
+        <div class="container containerfile">
+            <fieldset>
+                <label for="fotocarnet">Foto carnet de conducir</label>
+                <input type="file" id="fotocarnet" class="boton">
+            </fieldset>
+            <div class="previsualizacion" id="previsualizacion"></div>
+        </div>
+        <div id="dropeo" class="dropeo">Soltar la imagen aquí</div>
+        <div class="container checkbox">
+            <fieldset id="fieldsetterminos">
+                <label for="terminos" class="labelterminos" id="labelterminos"><a>Terminos y condiciones</a></label>
+                <input type="checkbox" id="terminos">
+            </fieldset>
+        </div>
+        <br><input type="submit" value="Enviar" id="botonSubmit" class="submit boton">
+    </form>
+    <div class="containertarjetas oculto" id="ofertas">
+        <svg id="left" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 288 480 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-370.7 0 73.4-73.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-128 128z"/></svg>
+        <svg id="right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M502.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l370.7 0-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l128-128z"/></svg>
+    </div>
+    <script src="js.js"></script>
+</body>
+</html>

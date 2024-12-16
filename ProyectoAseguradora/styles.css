@@ -1,0 +1,190 @@
+body {
+  width: 100vw;
+  overflow-x: hidden;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background-image: url("img/fondo.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  gap: 25px;
+  min-height: 100vh;
+}
+
+header {
+  padding: 10px 150px;
+  background-color: beige;
+  text-align: center;
+}
+
+.h1 {
+  font-size: 5rem;
+}
+
+h3 {
+  padding: 0;
+  margin: 0;
+}
+
+.container {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 2px;
+}
+.container fieldset {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: none;
+}
+
+.containerfile {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.previsualizacion {
+  display: flex;
+  justify-self: flex-start;
+  align-items: center;
+  width: 30%;
+  height: 10vh;
+  margin-bottom: 15px;
+  border: 1px solid black;
+}
+
+.foto {
+  width: 50%;
+  height: 50%;
+}
+
+.sombra {
+  box-shadow: inset 0 10px 20px rgba(0, 0, 0, 0.2); /* Sombra con profundidad */
+}
+
+.wait {
+  cursor: wait;
+}
+
+.dropeo {
+  border: 2px dashed black;
+  padding: 50px 50px;
+  margin-bottom: 5px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  background-color: #DADADA;
+  padding: 5px 5px;
+  gap: 10%;
+  align-items: center;
+}
+
+.imagenprevisualizacion {
+  width: 100%;
+  height: 10vh;
+}
+
+.container3 {
+  justify-content: space-around;
+}
+
+.mal {
+  background-color: red;
+}
+
+svg {
+  width: 3vw;
+  cursor: pointer;
+}
+
+.transition {
+  transition: background-color 1s ease;
+}
+
+.bien {
+  background-color: #00BB00;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+.rechazar {
+  background-color: red;
+}
+
+.labelterminos {
+  text-decoration: underline;
+  cursor: pointer;
+  color: blue;
+}
+
+.boton {
+  padding: 3px 10px;
+  cursor: pointer;
+}
+
+.aceptar {
+  background-color: #00BB00;
+}
+
+.dorado {
+  background-color: #efb810;
+}
+
+.containertarjetas {
+  display: flex;
+  justify-content: space-between;
+  width: 60%;
+  background-color: #DADADA;
+  padding: 10px 0;
+}
+
+.containerfinal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40%;
+  padding: 10px 10px;
+  background-color: #DADADA;
+}
+
+.tarjetas {
+  border: 2px solid black;
+  width: 15vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 15px;
+}
+
+img {
+  width: 100%;
+  height: 15vh;
+}
+
+.oculto {
+  display: none;
+}
+
+.clicado {
+  border: 1px dashed grey;
+}
+
+.seleccionado {
+  background-color: beige;
+}
+
+.checkbox fieldset {
+  display: flex;
+  border: 1px solid black;
+}
+.checkbox fieldset input {
+  cursor: pointer;
+}/*# sourceMappingURL=styles.css.map */
