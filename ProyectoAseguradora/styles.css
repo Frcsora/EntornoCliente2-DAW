@@ -103,7 +103,7 @@ svg {
 }
 
 .transition {
-  transition: background-color 1s ease;
+  transition: background-color 1.5s ease;
 }
 
 .bien {
@@ -142,7 +142,7 @@ svg {
   justify-content: space-between;
   width: 60%;
   background-color: #DADADA;
-  padding: 10px 0;
+  padding: 10px 15px;
 }
 
 .containerfinal {

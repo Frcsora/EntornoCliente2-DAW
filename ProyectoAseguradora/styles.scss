@@ -16,6 +16,7 @@ header{
     background-color: beige;
     text-align: center;
 }
+
 .h1{
     font-size: 5rem;
 }
@@ -106,13 +107,17 @@ svg{
     cursor:pointer;
     color:blue;
 }
+.botonera{
+    display: flex;
+    justify-content: center;
+}
 .boton{
     padding: 3px 10px;
     cursor: pointer;
 }
 .aceptar{
     background-color: #00BB00;
-    
+
 }
 .dorado{
     background-color: #efb810;
