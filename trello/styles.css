@@ -3,6 +3,9 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f4f5f7;
+    width: 100vw;
+    overflow-x: hidden;
+    min-height: 100vh;
 }
 
 header {
@@ -32,12 +35,32 @@ header {
 }
 
 .card {
+    position: relative;
     background-color: white;
     border-radius: 3px;
     padding: 0.5rem;
     margin-bottom: 0.5rem;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     cursor: pointer;
+}
+
+.importante{
+    box-shadow: inset 0 0 0 3px red;
+}
+
+.pop-up{
+    font-size:0.7em;
+    position: absolute;
+    top:0;
+    left:100%;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    border: 1px dashed black;
+    padding: 10px;
+}
+
+.pop-up input{
+    cursor:pointer;
 }
 
 .card button {
@@ -70,7 +93,26 @@ header {
     overflow-x: auto;
 }
 
+.hidden {
+    display: none;
+}
+
+svg{
+    width: 10px;
+    height: 10px;
+}
+
 .flexcard{
     justify-content: flex-start;
     align-items: center;
 }
+
+p{
+    overflow:hidden;
+}
+
+.color{
+    min-width: 15%;
+}
+
+
