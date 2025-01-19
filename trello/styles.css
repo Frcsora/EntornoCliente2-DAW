@@ -54,6 +54,7 @@ header {
     top:0;
     left:100%;
     background-color: #fff;
+    color: #000;
     border-radius: 0.5rem;
     border: 1px dashed black;
     padding: 10px;
