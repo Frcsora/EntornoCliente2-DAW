@@ -37,6 +37,7 @@ function crearLista(container, i, tarjetas){
     botonEliminar.addEventListener('click', () => {
         Eliminar(containerInterno);
         if(!container.hasChildNodes()){
+            //Si hemos eliminado todas las listas saldrá un boton de reinicio que las vuelva a crear
             const botonReinicio = document.createElement("button");
             botonReinicio.classList.add("add-card");
             botonReinicio.innerText = "Reiniciar listas";
@@ -76,6 +77,15 @@ function drop(event){
     const tarjetaArrastrada = document.querySelector(`#${infoTarjeta}`);
     for(let i = 0; i < tarjetasAnteriores.length; i++) {
         if(tarjetasAnteriores[i] === tarjetaArrastrada) continue;
+        /*
+        * elemento.getBoundingClientRect: nos devuelve la información sobre la posicion absoluta(top left right bottom) del elemento asi como de sus dimensiones
+        * evento.clientY: nos devuelve la posicion absoluta respecte a top donde ha soltado el evento
+        * elemento.clientHeight: nos devuelve la altura del evento
+        * Con todo estos podemos ver si el lugar donde se suelta esta encima o debajo de otra tarjeta para colocarla en la posición deseada.
+        * Pero lo que quiero es que se tome como referencia el centro de la tarjeta, de forma que si el evento salta en la parte superior
+        * de una tarjeta la pone antes, en la inferior la pone después. Esto lo consigo sumandole al top del objeto DOMRECT
+        * la mitad de la altura del elemento.
+        * */
         const posicion = tarjetasAnteriores[i].getBoundingClientRect();
         if(posicion.top + (tarjetasAnteriores[i].clientHeight / 2) > event.clientY){
             contenedor.insertBefore(tarjetaArrastrada, tarjetasAnteriores[i]);
