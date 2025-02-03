@@ -1,68 +1,8 @@
-class Coche{
-    constructor(marca, modelo, anio){
-        this.marca = marca;
-        this.modelo = modelo;
-        this.anio = anio;
-    }
-}
-const coches = [
-    new Coche("coche", 1, 2017),
-    new Coche("coche", 2, 2015),
-    new Coche("coche", 3, 2023)
-]
-function callbackFunction(n1, n2, callback){
-    return callback(n1, n2);
-}
 addEventListener('DOMContentLoaded',() => {
-    /*let promise = new Promise((resolve, reject) => {
-        setTimeout(()=>{
-            resolve(coches[1]);
-            reject(new Error("Whoops!"));
-        }, 2000)
-    })
-    promise.then(res=>{
-        console.log(res);
-    }).catch(err=>{
-        console.log(err);
-    })*/
-    /*let promise = new Promise(function(resolve, reject) {
-        resolve(1);
-
-        setTimeout(() => resolve(2), 1000);
-    });
-    promise.then(alert);*/
-    //callbackFunction(5, 5, (a,b) => 5 + 5)
-    /*function aumentarTamano(circle){
-        const width = circle.getBoundingClientRect().width;
-        const height = circle.getBoundingClientRect().height;
-        circle.style.width = width + 'px';
-        circle.style.height = height + 'px';
-    }
-    function grow(circle, limit){
-        const interval = setInterval(() => {
-            if(circle.getBoundingClientRect().width < limit){
-                aumentarTamano(circle);
-            }else{
-                clearInterval(interval);
-            }
-        }, );
-    }
-    const showCircle = new Promise(resolve => {
-        setTimeout(resolve, 100);
-    })
-    showCircle(150, 150, 100).then(div => {
-        div.classList.add('message-ball');
-        div.append("Hello, world!");
-    });*/
-    /*fetch("https://pokeapi.co/api/v2/pokemon?limit=100&offset=0")
-            .then((response) => response.json())
-                .then((data) => {
-                    Array.from(data['results']).forEach((item) => {
-                        console.log(item['name']);
-                    })
-                })*/
+    let anteriores = [];
     let pokemons;
     let arrayCompleto = [];
+    document.body.classList.add('loading');
     fetch("https://pokeapi.co/api/v2/pokemon?limit=151&offset=0")
         .then(res => res.json())
     .then(json => {
@@ -76,62 +16,119 @@ addEventListener('DOMContentLoaded',() => {
                     .then(res => res.json())
                 .then(json => {
                     arrayCompleto.push(json);
-                    document.body.classList.add('loaded');
+
                 })
                     .catch(err => console.log(err));
             })
-            document.body.classList.remove('loaded');
+            fetch("https://pokeapi.co/api/v2/type/",{
+                headers: {"Content-Type": "application/json"}
+            }).then((response) => response.json()).
+            then((json) => {
+                crearTipo(json['results'])
+
+                document.getElementById("h1").remove();
+                document.body.classList.remove('loading');
+            }).catch((error) => {
+                console.log(error);
+            })
         }
     },1000)
 
     function crearTipo(tipos){
         const form = document.getElementById('form');
+        form.classList.remove('none');
+        form.classList.add('flexForm');
         const label = document.createElement("label");
-        label.innerText = "Tipos:   ";
+        label.innerText = "Types:";
         label.setAttribute("for", "tipo");
         const tipoSelect = document.createElement("select");
         tipoSelect.setAttribute("id", "tipo");
-        form.insertAdjacentElement('afterbegin', label);
+        form.insertAdjacentElement('beforeend', label);
         form.insertAdjacentElement("beforeend", tipoSelect);
+        const labelBuscador = document.createElement("label");
+        labelBuscador.innerText = "Buscador:";
+        labelBuscador.setAttribute("for", "buscador");
+        const input = document.createElement("input");
+        input.setAttribute("id", "buscador");
+        input.setAttribute("type", "text");
+        input.setAttribute("placeholder", "ID o nombre");
+        form.insertAdjacentElement("beforeend", labelBuscador);
+        form.insertAdjacentElement("beforeend", input);
+        const boton = document.createElement("button");
+        const option = document.createElement("option");
+        option.innerText = "All";
+        option.value = "all";
+        tipoSelect.insertAdjacentElement('afterbegin', option);
+        const noExisten = ["dark", "unknown", "stellar"];
         Array.from(tipos).forEach((tipo) => {
-            const option = document.createElement("option");
-            option.textContent = tipo['name'];
-            option.value = tipo['name'];
-            tipoSelect.insertAdjacentElement('beforeend',option);
+            if(!noExisten.includes(tipo.name)) {
+                const option = document.createElement("option");
+                option.textContent = primeraMayus(tipo['name']);
+                option.value = tipo['name'];
+                tipoSelect.insertAdjacentElement('beforeend',option);
+            }
+        })
+        const div = document.createElement("div");
+        div.classList.add('tarjetas');
+        div.id = "pokemons";
+        form.insertAdjacentElement('afterend',div);
+        arrayCompleto.forEach(pokemon => {
+            crearTarjeta(pokemon);
+        })
+        anteriores.push({
+            type:"all",
+            div: div
         })
     }
-    fetch("https://pokeapi.co/api/v2/type/",{
-        headers: {"Content-Type": "application/json"}
-    }).then((response) => response.json()).
-    then((data) => {
-        crearTipo(data['results'])
-    }).catch((error) => {
-        console.log(error);
-    })
 
     const interval = setInterval(()=>{
         if(document.getElementById("tipo")){
             document.getElementById("tipo").addEventListener("change", (event)=>{
                 const valor = event.target.value;
-                if(document.getElementById("pokemons")) document.getElementById("pokemons").remove();
+                if(document.getElementById("pokemons")) {
+                    anteriores.push({
+                        type: document.getElementById("pokemons").classList[1],
+                        div: document.getElementById("pokemons")
+                    });
+                    document.getElementById("pokemons").remove();
+                }
                 const div = document.createElement("div");
                 div.id = "pokemons";
-                div.classList.add("tarjetas")
+                div.classList.add("tarjetas", document.getElementById("tipo").value);
                 document.getElementById("form").insertAdjacentElement('afterend',div);
                 if(arrayCompleto.length === 151){
-                    Array.from(arrayCompleto).forEach((pokemon) => {
-                        const tipos = [];
-                        pokemon.types.forEach(tipo => {
-                            tipos.push(tipo.type.name);
-                        })
-                        if(tipos.includes(valor)){
+                    if(valor === "all"){
+                        Array.from(arrayCompleto).forEach(pokemon => {
                             crearTarjeta(pokemon);
-                        }
-                    })
-                    if(document.getElementById("pokemons").children.length === 0){
-                        const h1 = document.createElement("h1");
-                        h1.innerText = "No tenemos registro de pokemon de ese tipo";
-                        document.getElementById("pokemons").insertAdjacentElement('beforeend', h1)
+                        })
+                    }else{
+                        Array.from(arrayCompleto).forEach((pokemon) => {
+                            const tipos = [];
+                            pokemon.types.forEach(tipo => {
+                                tipos.push(tipo.type.name);
+                            })
+                            if(tipos.includes(valor)){
+                                crearTarjeta(pokemon);
+                            }
+                        })
+                    }
+
+                    if(!document.getElementsByTagName("button")[0]){
+                        const button = document.createElement("button");
+                        button.innerText = "Back";
+                        document.getElementById("pokemons").insertAdjacentElement('beforebegin', button);
+                        button.addEventListener("click", ()=>{
+                            const ultimo = anteriores.pop();
+                            if(anteriores.length < 1) anteriores.push(ultimo);
+                            document.getElementById("pokemons").remove();
+                            if(ultimo) document.getElementById("form").insertAdjacentElement('afterend',ultimo.div);
+                            if(anteriores.length <= 1) {
+                                button.remove();
+                                document.getElementById("tipo").value = "all";
+                            }else{
+                                document.getElementById("tipo").value = ultimo.type
+                            }
+                        });
                     }
                 }
             });
@@ -144,25 +141,14 @@ addEventListener('DOMContentLoaded',() => {
     function crearTarjeta(pokemon){
         const div = document.createElement("div");
         div.classList.add('tarjeta');
+        div.style.order = pokemon['id'];
         document.getElementById("pokemons").insertAdjacentElement('beforeend', div);
         const h3 = document.createElement("h3");
         h3.innerText = primeraMayus(pokemon['name']);
         div.insertAdjacentElement('beforeend', h3);
         const img = document.createElement("img");
         img.src = pokemon.sprites.other.dream_world.front_default;
-        const img2 = document.createElement("img");
-        //img2.src = pokemon.sprites.back_default;
-        //img2.classList.add('hidden');
-        /*img.addEventListener('mouseenter', () => {
-            img.classList.add('hidden');
-            img2.classList.remove('hidden');
-        })
-        img2.addEventListener('mouseleave', () => {
-            img.classList.remove('hidden');
-            img2.classList.add('hidden');
-        })*/
         div.insertAdjacentElement('beforeend', img);
-        div.insertAdjacentElement('beforeend', img2);
         const br = document.createElement("br");
         div.insertAdjacentElement('beforeend', br);
         const small = document.createElement("small");

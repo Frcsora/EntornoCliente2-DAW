@@ -1,24 +1,52 @@
 <!doctype html>
 <html lang="en">
 <style>
-    body{
+    html, body{
+        padding:0;
         overflow-x: hidden;
         width:100vw;
-        min-height:100vh;
         display: flex;
         flex-direction: column;
         align-items: center;
+        margin: 15px 0;
+        gap:50px;
+        min-height: 100vh;
+        background-image: url(poke-ball.png);
+        background-repeat: repeat;
+        background-color: #353535;
+        background-position: top;
+        color: white;
+    }
+    #form{
+        background-color: #DADADA;
+        border: 1px solid black;
+        color:black;
+        padding: 20px;
+    }
+    .flexForm{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .none{
+        display: none;
     }
     img{
         width:80%;
+        height: 250px;
+        transition: background-color 0.5s ease;
+    }
+    img:hover{
+        cursor:pointer;
+        background-color: #DADADA;
     }
     .tarjetas{
         width: 90vw;
         display: grid;
         grid-template-columns: 1fr 1fr 1fr 1fr;
         height: 100%;
-        gap:5%;
-        justify-content: center;
+        gap:5vw;
+        color:black;
     }
     .tarjeta{
         width: 100%;
@@ -28,9 +56,54 @@
         text-align: center;
         justify-content: space-between;
         align-items: center;
+        padding:15px;
+        gap:10px;
+        border-radius: 10px;
+        background-color: #fff;
     }
     .hidden{
         display: none;
+    }
+    button{
+        position: fixed;
+        bottom:0;
+        align-self: flex-start;
+        justify-self: flex-end;
+        background-color: #007BFF;
+        padding:1%;
+        border-radius: 5px;
+        transition: background-color 0.5s ease;
+    }
+    button:hover{
+        background-color:#898989 ;
+    }
+    .loading{
+        cursor: wait;
+    }
+    @media screen and (max-width: 900px){
+        .tarjetas{
+            grid-template-columns: 1fr 1fr;
+            gap:5px;
+            padding-left:50px;
+        }
+        .tarjeta{
+            padding: 5px;
+            width: 80%;
+        }
+
+    }
+    @media screen and (max-width: 600px){
+        .tarjetas{
+            grid-template-columns: 1fr;
+            gap:5px;
+
+        }
+        .tarjeta{
+            padding: 5px;
+        }
+        button{
+            padding: 2% 1%;
+        }
     }
 </style>
 <head>
@@ -38,10 +111,11 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Pokemon</title>
 </head>
 <body>
-    <form id="form"></form>
+    <h1 id="h1">Loading data, wait a moment please</h1>
+    <form id="form" class="none"></form>
     <script src="script.js"></script>
 </body>
 </html>
