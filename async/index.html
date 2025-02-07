@@ -3,12 +3,12 @@
 <style>
     html, body{
         padding:0;
+        margin:0 0 3vh 0;
         overflow-x: hidden;
         width:100vw;
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin: 15px 0;
         gap:50px;
         min-height: 100vh;
         background-image: url(poke-ball.png);
@@ -16,6 +16,9 @@
         background-color: #353535;
         background-position: top;
         color: white;
+    }
+    li{
+        list-style: none;
     }
     #form{
         background-color: #DADADA;
@@ -61,24 +64,66 @@
         border-radius: 10px;
         background-color: #fff;
     }
+    .noRes{
+        background-color: #DADADA;
+        color: black;
+        border: 1px solid black;
+        padding: 2%;
+    }
+    .info{
+        display: flex;
+        flex-direction: column;
+        color: black;
+        background-color: white;
+        align-items: center;
+        padding: 20px;
+        gap:20px;
+        width:80%;
+        border-radius: 10px;
+        border: 1px solid black;
+    }
+    .info p, .info ul{
+        margin:0;
+        padding:0;
+    }
+    .lista{
+        display: flex;
+        flex-direction: column;
+    }
+    .listas{
+        display: flex;
+        width:80%;
+        justify-content: space-between;
+    }
     .hidden{
         display: none;
     }
     button{
+        border-radius:5px;
+        transition: background-color 0.5s ease;
+        background-color: #007BFF;
+        padding:1%;
+    }
+    .back{
         position: fixed;
         bottom:0;
         align-self: flex-start;
         justify-self: flex-end;
-        background-color: #007BFF;
-        padding:1%;
-        border-radius: 5px;
-        transition: background-color 0.5s ease;
     }
     button:hover{
         background-color:#898989 ;
     }
     .loading{
         cursor: wait;
+    }
+    header{
+        margin:0;
+        width:100%;
+        display: flex;
+        justify-content: center;
+    }
+    header h1{
+        font-size: 50px;
     }
     @media screen and (max-width: 900px){
         .tarjetas{
@@ -90,9 +135,23 @@
             padding: 5px;
             width: 80%;
         }
-
+        button{
+            font-size:17px;
+            padding: 5%;
+        }
+        .listas{
+            flex-direction: column;
+            align-items: center;
+            gap:10px;
+        }
+        .lista{
+            text-align: center;
+        }
     }
     @media screen and (max-width: 600px){
+        header h1{
+            font-size: 30px;
+        }
         .tarjetas{
             grid-template-columns: 1fr;
             gap:5px;
@@ -101,9 +160,7 @@
         .tarjeta{
             padding: 5px;
         }
-        button{
-            padding: 2% 1%;
-        }
+
     }
 </style>
 <head>
@@ -114,6 +171,9 @@
     <title>Pokemon</title>
 </head>
 <body>
+    <header>
+        <h1>Welcome to my Pokedex!</h1>
+    </header>
     <h1 id="h1">Loading data, wait a moment please</h1>
     <form id="form" class="none"></form>
     <script src="script.js"></script>
