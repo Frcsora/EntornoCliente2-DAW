@@ -1,0 +1,58 @@
+{
+  "fullname": {
+    "name": "Francesc",
+    "surnames": {
+      "surname1": "Sorà",
+      "surname2": "Quevedo"
+    }
+  },
+  "contact": {
+    "phone_number": "645755219",
+    "e-mail": "C/Son ventallol, 33"
+  },
+  "studies":[
+    {
+      "title": "Bachillerato Social",
+      "academic_year_finish": "2011",
+      "academic_centre": "Sant Josep Obrer",
+      "city": "Palma"
+    },
+    {
+      "title": "Técnico superior en Desarrollo de Aplicaciones Web",
+      "academic_year_finish": "Actualmente cursando",
+      "academic_centre": "CIFP Francesc de Borja Moll",
+      "city": "Palma"
+    }
+  ],
+  "works": [
+    {
+      "company": "Urbia Palma Voleibol",
+      "job":"Controlador de acceso",
+      "inicio_fin": "Febrero 2019-Marzo 2020"
+    },
+    {
+      "company": "Prosegur-RCD Mallorca",
+      "job":"Controlador de acceso en tienda",
+      "inicio_fin": "Mayo 2024-Actualidad"
+    }
+  ],
+  "languages": [
+    {
+      "language": "Español",
+      "nivel": "Nativo"
+    },
+    {
+      "language": "Catalán",
+      "nivel": "Nativo"
+    },
+    {
+      "language": "Inglés",
+      "nivel": "B2.2(Intermedio avanzado). Actualmente cursando"
+    }
+  ],
+  "soft_skills": [
+    "Facilidad de aprendizaje",
+    "Capacidad de colaboración",
+    "Calmado a la hora de trabajar"
+  ]
+}
