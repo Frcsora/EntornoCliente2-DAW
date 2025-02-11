@@ -1,0 +1,80 @@
+{
+  "fullname": {
+    "name": "Francesc",
+    "surnames": {
+      "surname1": "Sorà",
+      "surname2": "Quevedo"
+    }
+  },
+  "occupation": "Web developer",
+  "contact": {
+    "phone_number": "645755219",
+    "email": "francesc93sq@gmail.com",
+    "webpage": "https://www.fsoraquevedo.com"
+  },
+  "studies":[
+    {
+      "title": "Bachillerato Social",
+      "academic_year_start": "2009",
+      "academic_year_finish": "2011",
+      "academic_centre": "Sant Josep Obrer",
+      "city": "Palma"
+    },
+    {
+      "title": "Técnico superior en Desarrollo de Aplicaciones Web",
+      "academic_year_start": "2023",
+      "academic_year_finish": "Actualmente cursando",
+      "academic_centre": "CIFP Francesc de Borja Moll",
+      "city": "Palma"
+    }
+  ],
+  "works": [
+    {
+      "company": "Urbia Palma Voleibol",
+      "job":"Controlador de acceso",
+      "inicio_fin": "Febrero 2019-Marzo 2020"
+    },
+    {
+      "company": "Prosegur-RCD Mallorca",
+      "job":"Controlador de acceso en tienda",
+      "inicio_fin": "Mayo 2024-Actualidad"
+    }
+  ],
+  "languages": [
+    {
+      "language": "Español",
+      "level": "Nativo"
+    },
+    {
+      "language": "Catalán",
+      "level": "Nativo"
+    },
+    {
+      "language": "Inglés",
+      "level": "B2.2(Intermedio avanzado). Actualmente cursando"
+    }
+  ],
+  "soft_skills": [
+    "Facilidad de aprendizaje",
+    "Capacidad de colaboración",
+    "Calmado a la hora de trabajar"
+  ],
+  "projects": [
+    {
+      "name": "Pokemon",
+      "url": "https://www.fsoraquevedo.com/pokemon/"
+    },
+    {
+      "name": "Star wars",
+      "url": "https://www.fsoraquevedo.com/starwars/"
+    },
+    {
+      "name": "Cafes",
+      "url": "https://fsoraquevedo.com/cafe/"
+    },
+    {
+      "name": "Ajedrez",
+      "url": "https://fsoraquevedo.com/chess/"
+    }
+  ]
+}

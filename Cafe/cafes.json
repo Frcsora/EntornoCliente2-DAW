@@ -1,0 +1,49 @@
+{
+  "cafes": [
+    {
+      "nombre": "Espresso",
+      "descripcion": "Café concentrado de sabor intenso y cuerpo robusto, servido en una pequeña taza.",
+      "precio": 2.00
+    },
+    {
+      "nombre": "Americano",
+      "descripcion": "Café espresso diluido con agua caliente para un sabor más suave.",
+      "precio": 2.50
+    },
+    {
+      "nombre": "Latte",
+      "descripcion": "Espresso con abundante leche vaporizada y una fina capa de espuma.",
+      "precio": 3.50
+    },
+    {
+      "nombre": "Cappuccino",
+      "descripcion": "Equilibrada mezcla de espresso, leche vaporizada y espuma de leche.",
+      "precio": 3.75
+    },
+    {
+      "nombre": "Macchiato",
+      "descripcion": "Espresso con un toque de espuma de leche para suavizar su intensidad.",
+      "precio": 3.00
+    },
+    {
+      "nombre": "Mocha",
+      "descripcion": "Combinación de espresso, chocolate caliente y leche vaporizada, coronado con crema batida.",
+      "precio": 4.00
+    },
+    {
+      "nombre": "Flat White",
+      "descripcion": "Bebida de espresso con leche vaporizada, similar al latte pero con una textura más sedosa.",
+      "precio": 3.75
+    },
+    {
+      "nombre": "Affogato",
+      "descripcion": "Postre de café que consiste en una bola de helado de vainilla bañada con espresso caliente.",
+      "precio": 4.50
+    },
+    {
+      "nombre": "Café Irlandés",
+      "descripcion": "Mezcla de café, whisky irlandés, azúcar y una capa de crema batida.",
+      "precio": 5.50
+    }
+  ]
+}
