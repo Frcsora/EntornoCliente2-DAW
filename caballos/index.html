@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Caballos</title>
+    <style>
+        body{
+            width: 100vw;
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .container{
+            background-image: url("fondo.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: 25% 65%;
+            display: grid;
+            width: 80vw;
+            grid-template-columns: 1fr;
+            box-shadow: inset 0 0 0 5px black;
+            padding: 20px;
+        }
+        .pista{
+            width: 100%;
+        }
+        img{
+            position: relative;
+            width: 25%;
+            height: 20vh;
+        }
+    </style>
+</head>
+<body>
+    <h1>Carreras de caballos</h1>
+    <button id="boton">Iniciar carrera</button>
+    <div id="container" class="container"></div>
+<script src="index.js"></script>
+</body>
+</html>
